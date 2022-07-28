@@ -14,34 +14,37 @@ function App() {
   const [Web3, setWeb3] = useState([]);
   const [account, setAccount] = useState([]);
   const [Triggers, setTriggers]=useState([]);
+  const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
 
   let allTriggs= [];
-/*
-  const getFromDB= async()=>{
-    allTriggs = await getAllTriggers();  
-  };
-*/
+  /*
+    const getFromDB= async()=>{
+      allTriggs = await getAllTriggers();  
+    };
+  */
   function test(trigs){
     console.log("ccc");
     setTriggers(trigs);
     allTriggs= trigs;
-    console.log(Triggers);
+   // console.log(Triggers);
   }
  
+  const update = async()=>{
+    let all = await getAllTriggers();    
+    setTriggers(all);
+  }
+   
   useEffect(()=>{
-    console.log("init");
+
     const init = async()=>{
-     let all = await getAllTriggers();
-     //test(all);
-    // console.log(allTriggs);
+     let all = await getAllTriggers();    
      setTriggers(all);
-     console.log("init2");
-     console.log(all);
-     console.log(Triggers);
+   
     } 
 
     init();
-    },[]);
+  },[]);
 
   //if (Triggers.length==0) return <div>loading</div>;
   return (
@@ -56,6 +59,7 @@ function App() {
       
       <TriggerCardList 
               triggers= {Triggers}
+              updateFunction = {forceUpdate}
             ></TriggerCardList>        
      
     </div>

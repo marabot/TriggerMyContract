@@ -1,6 +1,7 @@
 class Trigger {
     
     constructor(
+        docId,
         maker,
         contractToCall,
         functionToCall,
@@ -9,6 +10,7 @@ class Trigger {
         lastTick
         
     ) {
+        this.id = docId;
         this.maker = maker;
         this.contractToCall = contractToCall;
         this.functionToCall = functionToCall;

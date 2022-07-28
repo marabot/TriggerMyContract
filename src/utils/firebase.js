@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, addDoc } from "firebase/firestore";
+import { getFirestore, addDoc,updateDoc, doc,getDocs, collection } from "firebase/firestore";
 import "firebase/firestore";
-import {getDocs, collection} from"firebase/firestore";
 
 const Trigger = require("../entities/Trigger");
 
@@ -18,25 +17,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-export async function getAllTriggers(web3) {
+export async function getAllTriggers() {
     const tabReturn = [];
-    const docs = await getDocs(collection(db, "users"));    
+    const docs = await getDocs(collection(db, "users"));   
 
     docs.forEach((doc) => {
         const datas= doc.data();
-        
-            tabReturn.push(
-            
-                new Trigger(datas.maker,
-                    datas.contractToCall,
-                    datas.functionToCall,
-                    datas.interval,
-                    datas.inWork,
-                    datas.lastTick
-                    )
+        console.log("doooc");
+    console.log(doc.id);
+            tabReturn.push(            
+                    new Trigger(
+                        doc.id,
+                        datas.maker,
+                        datas.contractToCall,
+                        datas.functionToCall,
+                        datas.interval,
+                        datas.inWork,
+                        datas.lastTick
+                        )
             );   
-        });
-    
+        });    
     return tabReturn;
 }
 
@@ -45,13 +45,13 @@ export async function getTriggerByAddrFrom(address, web3){
     const docs = await getDocs(collection(db, "users"));    
 
     docs.forEach((doc) => {
-        const datas= doc.data();
-        console.log(datas);
-        console.log(datas.FromAddress);
+        const datas= doc.data();     
+      
         if (datas.FromAddress == web3)
 
         tabReturn.push(
-            Trigger(datas.maker,
+            Trigger(
+                    datas.maker,
                     datas.contractToCall,
                     datas.functionToCall,
                     datas.interval,
@@ -59,29 +59,26 @@ export async function getTriggerByAddrFrom(address, web3){
                     datas.lastTick
                     )
         );   
-
-/*
-        tabReturn.push({
-        
-            fromAddress: datas.FromAddress,
-            contractCall : datas.ContractToCall,
-            functionToCall: datas.FunctionToCall,
-            timing : datas.timing
-
-        });   */
-    });
-    
+    });    
     return tabReturn;
-
 }
 
-export async function addToDB(userAddr, contractAdd, functionToCall, timing){
+export async function switchTriggerState(id, newValue){
+    // Add a new document in collection "cities"
+    const docRef = doc(db, "users", id);
+    const result = await updateDoc(docRef, {
+        inWork : newValue
+    });
+   return result;
+}
+
+export async function addToDB(userAddr, contractAdd, functionToCall, interval){
     try {
     const docRef = await addDoc(collection(db, "users"), {
         maker: userAddr,
         contractToCall : contractAdd,
         functionToCall :functionToCall,
-        interval : "daily", 
+        interval : interval, 
         inWork: false,
         lastTick : 0
     });
