@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import TriggerCard from './TriggerCard.js';
 
-function TriggerCardList(triggers, updateFunction){
-     
+function TriggerCardList(triggers){
+     console.log("Card List");
+    console.log(triggers);
+
     const isReady = ()=>{
         return (
-            triggers.triggers.length!=0
+            triggers.length!=0
         );
     }  
  
@@ -24,7 +26,7 @@ function TriggerCardList(triggers, updateFunction){
                     
                     <TriggerCard
                         trigger = {trigger}
-                        updateFunction={updateFunction}
+                       
                     ></TriggerCard>
                 
                 </div>)

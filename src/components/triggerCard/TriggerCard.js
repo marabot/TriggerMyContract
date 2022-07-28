@@ -2,15 +2,12 @@ import React, { useState, useEffect, force } from 'react';
 import '../../custom.css';
 import {switchTriggerState} from '../../utils/firebase.js';
 
-function TriggerCard(trigger, updateFunction){
+function TriggerCard(trigger){
 
-    const [Running, setRunnning] = React.useState(trigger.trigger.inWork.toString());  
-    const onOffState = trigger.trigger.inWork;
-
+    const [Running, setRunnning] = React.useState(trigger.inWork);  
+   
     const OnOffButton = function (triggerId){
-       
-        console.log(triggerId);
-      
+             
         if (Running==true){
             return <button onClick={()=>switchInWork(triggerId, false)}> Stop </button>
         }else
@@ -43,7 +40,7 @@ function TriggerCard(trigger, updateFunction){
                          <td className = "cellTabTriggerLabel">Maker</td>
                          <td className = "cellTabTriggerInfos">{trigger.trigger.maker}</td>   
                          <td className = "cellTabTriggerLabelInterval">Interval</td>                           
-                         <td className = "cellTabTrigger"> {onOffState?"Running":"Paused"}</td>  
+                         <td className = "cellTabTrigger"> {Running?"Running":"Paused"}</td>  
                      </tr>
                      <tr>
                          <td className="cellTabTriggerLabel">contract</td>

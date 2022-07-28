@@ -4,7 +4,6 @@ import Modal from 'react-bootstrap/Modal';
 import {addToDB} from '../../utils/firebase.js';
 
 
-
 function AddButton(){
   
     const [UserAddr, setUserAddr] = useState('');
@@ -42,13 +41,12 @@ function AddButton(){
         )
     };
  
-  
-    
+     
 
     return(            
        
         <div>
-            <Button variant="primary" onClick={handleShow}> Showwww ! </Button> 
+            <Button variant="primary" onClick={handleShow}> Add new Trigger </Button> 
 
              <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
             

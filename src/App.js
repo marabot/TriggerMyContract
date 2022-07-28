@@ -16,35 +16,23 @@ function App() {
   const [Triggers, setTriggers]=useState([]);
   const [, updateState] = React.useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
-
-  let allTriggs= [];
-  /*
-    const getFromDB= async()=>{
-      allTriggs = await getAllTriggers();  
-    };
-  */
-  function test(trigs){
-    console.log("ccc");
-    setTriggers(trigs);
-    allTriggs= trigs;
-   // console.log(Triggers);
-  }
- 
-  const update = async()=>{
-    let all = await getAllTriggers();    
-    setTriggers(all);
-  }
+  const [UserTriggers, setUserTriggers] =useState([]);
    
   useEffect(()=>{
 
-    const init = async()=>{
-     let all = await getAllTriggers();    
-     setTriggers(all);
-   
+    const init = async()=>{ 
+      let all = await getAllTriggers();     
+      console.log("initttt"); 
+      setTriggers(all);    
     } 
-
+    
     init();
   },[]);
+
+  useEffect(() => { 
+   setUserTriggers(Triggers.filter(e => e.maker == account[0]));
+  }, [Triggers,account]);
+
 
   //if (Triggers.length==0) return <div>loading</div>;
   return (
@@ -58,8 +46,8 @@ function App() {
 <AddButton></AddButton>
       
       <TriggerCardList 
-              triggers= {Triggers}
-              updateFunction = {forceUpdate}
+              triggers= {UserTriggers}
+             
             ></TriggerCardList>        
      
     </div>

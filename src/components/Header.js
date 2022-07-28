@@ -24,8 +24,8 @@ function Header({
 
     function init() {
 
-        console.log("Initializing example");
-        console.log("WalletConnectProvider is", WalletConnectProvider);
+     //   console.log("Initializing example");
+     //   console.log("WalletConnectProvider is", WalletConnectProvider);
         
       
         // Tell Web3modal what providers we have available.
