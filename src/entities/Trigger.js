@@ -3,6 +3,7 @@ class Trigger {
     constructor(
         docId,
         maker,
+        chain, 
         contractToCall,
         functionToCall,
         interval,
@@ -12,6 +13,7 @@ class Trigger {
     ) {
         this.id = docId;
         this.maker = maker;
+        this.chain = chain;
         this.contractToCall = contractToCall;
         this.functionToCall = functionToCall;
         this.interval = interval;

@@ -1,36 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {addToDB} from '../../utils/firebase.js';
 
 
-function AddButton(){
+function AddButton({userAddress, chainId}){
   
-    const [UserAddr, setUserAddr] = useState('');
+  
+    const [ChainId, setChainId] = useState('');
+    
     const [ToContract, setToContract] = useState('');
     const [FunctionToCall, setFunctionToCall] =useState('');
     const [Timing, setTiming] = useState('daily');   
    
     const [show, setShow] = useState(false); 
-    const handleClose = () => setShow(false);  
-
+    const handleClose = () => setShow(false); 
+    
+        
+    
     const handleCloseAndSave = () => {    
-       addToDB(UserAddr, ToContract, FunctionToCall, Timing);
-       setUserAddr('');
+        
+       addToDB(userAddress, ChainId, ToContract, FunctionToCall, Timing );      
        setToContract('');
        setFunctionToCall('');
        setTiming('daily');
        setShow(false);
     };
 
-    const handleShow = () => {
-        console.log(show);
-        setShow(true);
-        console.log(show);        
+    const handleShow = () => {   
+       
+        setShow(true);          
     };
 
-    const options = function(){  
+    useEffect(()=>{        
+        const init = async()=>{          
+            setChainId(chainId);
+        } 
+        
+        init();
+      },[chainId]);
 
+    const options = function(){   
+       
         return (
             <select name="timing" onChange={e=>setTiming(e.target.value)}>  
                 <option value="hourly">hourly</option>
@@ -54,14 +65,11 @@ function AddButton(){
                             <Modal.Title>Modal heading</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <form>
-                        <label>from</label><br/>
-                        <input value={UserAddr} type="text" name="from" onChange={e=>setUserAddr(e.target.value)}/><br/>
+                        <form>    
                         <label>to</label><br/>
                         <input value={ToContract} type="text" name="to" onChange={e=>setToContract(e.target.value)}/><br/>
                         <label>function to call</label><br/>
                         <input value={FunctionToCall} type="text" name="function" onChange={e=>setFunctionToCall(e.target.value)}/><br/>
-
                         <label>function to call</label><br/>
                         {options()}
                         </form>

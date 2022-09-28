@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import Web3 from 'web3';
 import Web3Modal from "web3modal";
-import WalletConnectProvider from '@walletconnect/web3-provider';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
 function Header({
-     setWeb3, setAccounts
+     setWeb3, setAccounts, setChainId
 }){    
   
 
@@ -51,65 +50,69 @@ function Header({
     
         // Get a Web3 instance for the wallet
        // const web3 = new Web3(provider);       
-       if (window.ethereum) {
-        web3 = new Web3(window.ethereum);   
-        setWeb3(web3);     
-        await window.ethereum.enable(); 
-       
-      }
-      // Legacy dapp browsers...
-      else if (window.web3) {
-        // Use Mist/MetaMask's provider.
-        web3 = window.web3;
-        setWeb3(web3);
-        console.log("Injected web3 detected.");
-       
-      }
-      // Fallback to localhost; use dev console port by default...
-      else {
-        const provider = new Web3.providers.HttpProvider(
-          "http://localhost:9545"
-        );
-        web3 = new Web3(provider);
-        console.log("No web3 instance injected, using Local web3.");
-        setWeb3(web3);
-       
-      }
-      
-        const accounts = await web3.eth.getAccounts();
-        setAccounts(accounts);
-        
-        console.log("Web3 instance is", web3);
-      
-        // Get connected chain id from Ethereum node
-        const chainId = await web3.eth.getChainId();
-        console.log(chainId);
-        // Load chain information over an HTTP API
-       if (chainId==1)
-       {
-        document.querySelector("#network-name").textContent = "Ethereum MainNet";
-       }else if (chainId==1337){
-        document.querySelector("#network-name").textContent = "Truffle Local";
-       }       
-       else{
-        document.querySelector("#network-name").textContent = "unknowNetwork";
+          if (window.ethereum) {
+            web3 = new Web3(window.ethereum);   
+            setWeb3(web3);     
+            await window.ethereum.enable(); 
+          
+          }
+          // Legacy dapp browsers...
+          else if (window.web3) {
+            // Use Mist/MetaMask's provider.
+            web3 = window.web3;
+            setWeb3(web3);
+            console.log("Injected web3 detected.");
+          
+          }
+          // Fallback to localhost; use dev console port by default...
+          else {
+            const provider = new Web3.providers.HttpProvider(
+              "http://localhost:9545"
+            );
+            web3 = new Web3(provider);
+            console.log("No web3 instance injected, using Local web3.");
+            setWeb3(web3);
        }
-       /* const chainData =  EvmChains.getChain(chainId);
+      
+      const accounts = await web3.eth.getAccounts();
+      setAccounts(accounts);
+      
+    
+      // Get connected chain id from Ethereum node
+      const chainId = await web3.eth.getChainId();
+      console.log("chainId");
+      console.log(chainId);
+      setChainId(chainId);
+
+        // Load chain information over an HTTP API
        
+      if (chainId===1)
+      {
+        document.querySelector("#network-name").textContent = "Ethereum MainNet";
+      }else if (chainId===1337){
+        document.querySelector("#network-name").textContent = "Truffle Local";
+      }       
+      else{
+        document.querySelector("#network-name").textContent = "unknowNetwork";
+      }
+            
+      /* const chainData =  EvmChains.getChain(chainId);
+      
         document.querySelector("#network-name").textContent = chainData.name;
       */
         // Get list of accounts of the connected wallet
       
         // MetaMask does not give you all accounts, only the selected account
-        console.log("Got accounts", accounts);
+        //console.log("Got accounts", accounts);
         selectedAccount = accounts[0];
         
         selectedAccount=accounts[0].substring(0,5)+ "..." + accounts[0].substring(accounts[0].length-3)
         document.querySelector("#selected-account").textContent = selectedAccount;
-   
+  
         // Display fully loaded UI for wallet data
         document.querySelector("#prepare").style.display = "none";
         document.querySelector("#connected").style.display = "block";
+      
       }
     
       async function refreshAccountData() {
@@ -117,24 +120,25 @@ function Header({
         // If any current data is displayed when
         // the user is switching acounts in the wallet
         // immediate hide this data
-        document.querySelector("#connected").style.display = "none";
-        document.querySelector("#prepare").style.display = "block";
+        if (document.querySelector("#connected")) document.querySelector("#connected").style.display = "none";       
+        if (document.querySelector("#prepare")) document.querySelector("#prepare").style.display = "block";
       
         // Disable button while UI is loading.
         // fetchAccountData() will take a while as it communicates
         // with Ethereum node via JSON-RPC and loads chain data
         // over an API call.
-        document.querySelector("#btn-connect").setAttribute("disabled", "disabled")
+        if (document.querySelector("#btn-connect"))document.querySelector("#btn-connect").setAttribute("disabled", "disabled");
         await fetchAccountData(provider);
-        document.querySelector("#btn-connect").removeAttribute("disabled")
+        if (document.querySelector("#btn-connect"))document.querySelector("#btn-connect").removeAttribute("disabled");
       }
       
     
       async function onConnect() {
     
-        console.log("Opening a dialog", web3Modal);
+        //console.log("Opening a dialog", web3Modal);
         try {
           provider = await web3Modal.connect();
+         
         } catch(e) {
           console.log("Could not get a wallet connection", e);
           return;
@@ -182,6 +186,7 @@ function Header({
 
         setWeb3([]);
         setAccounts([]);
+        
       }
       
     window.addEventListener('DOMContentLoaded', async () => {
@@ -197,14 +202,6 @@ function Header({
         display :"none"
     }
 
-
-    const styleMenuBack= {
-      color:"white",  
-      fontSize:30,
-      background:"linear-gradient(135deg,#555555,#777777)",
-      height:"100px"
-      
-  }
   
   const styleAddr= {
     color:"white",
@@ -261,12 +258,9 @@ function Header({
   */
 
    useEffect(()=>{
-     /*
-      if (web3_2==undefined) console.log("gagaehahaeg");
-      if (web3_2!=undefined) onConnect();
-    */
+            
     
-    init();
+    //init();
     },[]);
 
 

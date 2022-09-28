@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
 import TriggerCard from './TriggerCard.js';
 
 function TriggerCardList(triggers){
-     console.log("Card List");
-    console.log(triggers);
+    // console.log("Card List");
+    // console.log(triggers);
 
     const isReady = ()=>{
         return (
-            triggers.length!=0
+            triggers.length!==0
         );
     }  
  

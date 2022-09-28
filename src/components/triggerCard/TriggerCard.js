@@ -1,4 +1,4 @@
-import React, { useState, useEffect, force } from 'react';
+import React, { useEffect } from 'react';
 import '../../custom.css';
 import {switchTriggerState} from '../../utils/firebase.js';
 
@@ -8,7 +8,7 @@ function TriggerCard(trigger){
    
     const OnOffButton = function (triggerId){
              
-        if (Running==true){
+        if (Running===true){
             return <button onClick={()=>switchInWork(triggerId, false)}> Stop </button>
         }else
         {
@@ -29,7 +29,7 @@ function TriggerCard(trigger){
         } 
 
         init();
-    },[]);
+    },[trigger]);
 
     return(    
         

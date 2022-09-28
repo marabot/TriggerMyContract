@@ -1,36 +1,41 @@
-import logo from './logo.svg';
+
 import './App.css';
 import TriggerCardList from './components/triggerCard/TriggerCardList.js';
 import AddButton from './components/buttonAddTrigger/AddButton.js';
-//import AddButton from './components/triggerCard/TriggerCardList.js';
 import {getAllTriggers} from './utils/firebase.js';
 import HEADER from './components/Header.js';
 import React, { useState, useEffect } from 'react';
-
+import DepositButton from './components/buttonDeposit/DepositButton.js';
+const path = require('path');
+require("dotenv").config({ path: path.resolve(__dirname, '..', '.env') });
 
 
 function App() {
 
   const [Web3, setWeb3] = useState([]);
   const [account, setAccount] = useState([]);
+  const [ChainId, setChainId] = useState('');
   const [Triggers, setTriggers]=useState([]);
-  const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);
   const [UserTriggers, setUserTriggers] =useState([]);
    
   useEffect(()=>{
 
     const init = async()=>{ 
       let all = await getAllTriggers();     
-      console.log("initttt"); 
-      setTriggers(all);    
+      console.log("init"); 
+      setTriggers(all);  
+      console.log("cchhhhain");
+      console.log(ChainId);
     } 
     
     init();
-  },[]);
+  },[ChainId]);
+  
+  
+  
 
   useEffect(() => { 
-   setUserTriggers(Triggers.filter(e => e.maker == account[0]));
+   setUserTriggers(Triggers.filter(e => e.maker === account[0]));
   }, [Triggers,account]);
 
 
@@ -40,15 +45,26 @@ function App() {
     <div className="App">
     <HEADER      
       setWeb3={setWeb3}
-      setAccounts={setAccount}>
-    </HEADER>
+      setAccounts={setAccount}
+      setChainId={setChainId}
+      />
+      
 
-<AddButton></AddButton>
+    <AddButton 
+      userAddress={account[0]}  
+      chainId={ChainId}    
+    ></AddButton>
+
+    <DepositButton
+      userAddress={account[0]}
+      web3={Web3}
+         
+    ></DepositButton> 
       
       <TriggerCardList 
               triggers= {UserTriggers}
              
-            ></TriggerCardList>        
+        ></TriggerCardList>        
      
     </div>
   );
