@@ -8,8 +8,6 @@ import Col from 'react-bootstrap/Col';
 function Header({
      setWeb3, setAccounts, setChainId
 }){    
-  
-
     // Web3modal instance
     let web3Modal;
     
@@ -25,7 +23,6 @@ function Header({
 
      //   console.log("Initializing example");
      //   console.log("WalletConnectProvider is", WalletConnectProvider);
-        
       
         // Tell Web3modal what providers we have available.
         // Built-in web browser provider (only one can exist as a time)
@@ -39,7 +36,10 @@ function Header({
             }
           },*/
         };
-      
+        
+         onConnect();
+ 
+
         web3Modal = new Web3Modal({
           cacheProvider: false, // optional
           providerOptions, // required
@@ -204,51 +204,44 @@ function Header({
 
   
   const styleAddr= {
-    color:"white",
-      textAlign:"right",
-      paddingRight:"15px",
+      color:"white",
+      textAlign:"center",      
       fontSize:"20px",
       borderColor:"black",
       borderSize:"3"
   }
   
   
-  const styleTitreBack= {
-      color:"white",
-      textAlign:"left",
-      padding:"10px",
-      paddingLeft:"30px",
+  const styleTitreBack= {    
+      color:"white",    
       fontSize:"30px",
-      
+      paddingLeft:"10px"
   }
 
   const boutonMenu= {
-    marginTop:"25px",
+   
     color:"white",
-    backgroundColor:"#55225520",
-    paddingRight:"15px",
+    backgroundColor:"#55225520",  
     borderColor:"#ffffff",
     fontSize:15,
     width:"150px",
     borderRadius: "20px"
  }
 
- const transparent={
-    backgroundColor:"#00000000"
-
- }
 
  const container={
-  backgroundColor:"#222222ff"
-
+  display:"flex",
+  backgroundColor:"#222222ff",  
+  width:"100%",
+  height:"110px",
+  justifyContent:"space-between",
+  alignItems:"center",
+  padding:"20px"  
 }
 
  const wrongNetworkMess={
-    fontSize:15,
-   
-    paddingTop:"0px",
-    paddingBottom:"15px",
-    paddingRight:"15px",
+  textAlign:"center",   
+    fontSize:15,   
     color:"white"
  }
   /*
@@ -266,18 +259,13 @@ function Header({
 
 
     return(    
-        <div style={container}>          
-            <Row>
-              <Col className="col-sm-8"> 
+        <div style={container}>         
+            
               <div style={styleTitreBack}>
                             <div className="header-title" style={styleTitreBack}>
                                     TriggerMyContract
                             </div>
                         </div> 
-              </Col>
-              <Col className="col-sm-4" > 
-              
-                  <div   style={transparent} className="text-right">   
                    <div id="prepare" >
                       <button id="btn-connect" style={boutonMenu}> connect</button>
                   </div>
@@ -288,10 +276,6 @@ function Header({
                                     <div id="network-name" style={wrongNetworkMess}></div>
                         </div>
                     </div>
-                  </div> 
-    
-               </Col>
-            </Row>    
         </div>
     );
 }

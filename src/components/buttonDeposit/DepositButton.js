@@ -5,7 +5,7 @@ import {TryRegisterUser} from '../../utils/firebase.js';
 require('dotenv').config();
 
 
-function DepositButton(userWallet, web3){
+function DepositButton(userWallet){
   
     const [UserAddr, setUserAddr] = useState('');
     const [DepositValue, setDepositValue] = useState(0);
@@ -37,6 +37,14 @@ function DepositButton(userWallet, web3){
           setUserAddr(userWallet);          
         } 
         
+        if (userWallet.userAddress==undefined) {
+            document.querySelector("#buttonDeposit").disabled = 1;
+        }else
+        {
+            document.querySelector("#buttonDeposit").disabled = 0;
+        }
+        
+       
         init();
       },[userWallet]);   
      
@@ -44,7 +52,7 @@ function DepositButton(userWallet, web3){
     return(            
        
         <div>
-         <Button variant="primary" onClick={handleShow}> Deposit</Button> 
+         <Button id="buttonDeposit" variant="primary" onClick={handleShow}> Deposit</Button> 
 
                 <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
 

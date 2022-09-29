@@ -36,9 +36,18 @@ function AddButton({userAddress, chainId}){
         const init = async()=>{          
             setChainId(chainId);
         } 
-        
+     
+        if (userAddress==undefined) {
+            document.querySelector("#buttonAdd").disabled = 1;
+        }else
+        {
+            document.querySelector("#buttonAdd").disabled = 0;
+        }
+
+
+    
         init();
-      },[chainId]);
+      },[chainId, userAddress]);
 
     const options = function(){   
        
@@ -51,13 +60,13 @@ function AddButton({userAddress, chainId}){
             </select>
         )
     };
- 
-     
+
+
 
     return(            
        
         <div>
-            <Button variant="primary" onClick={handleShow}> Add new Trigger </Button> 
+            <Button id="buttonAdd" variant="primary" onClick={handleShow}> Add new Trigger </Button> 
 
              <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
             

@@ -14,22 +14,32 @@ function TriggerCardList(triggers){
         return <div>Loading</div>;
     }
    
+
+    const triggersContainer={
+        padding:"12px",
+        width:"100%",
+        height:"100%",
+        backgroundColor:"#51111120", 
+        borderColor:"#f33fff",
+        borderRadius:"10px"
+    }
+
     return(    
-        <div>
+        <div style = {triggersContainer}>
            
-           {triggers.triggers.map((trigger,i)=>{
+           {
+           triggers.triggers.map((trigger,i)=>{
             
-              return ( 
-                
-                <div key={i}>
+                return ( 
                     
-                    <TriggerCard
-                        trigger = {trigger}
-                       
-                    ></TriggerCard>
-                
-                </div>)
-           })
+                    <div key={i}>
+                        
+                        <TriggerCard
+                            trigger = {trigger}                        
+                        ></TriggerCard>
+                    
+                    </div>)
+            })
            }
            
         </div>                    
