@@ -1,8 +1,7 @@
 import React, {useEffect} from "react";
 import Web3 from 'web3';
 import Web3Modal from "web3modal";
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import logo from "./cmonDoSomethingcontract.png";
 
 
 function Header({
@@ -212,7 +211,9 @@ function Header({
   }
   
   
-  const styleTitreBack= {    
+  const styleTitreBack= { 
+      display:"flex",   
+      alignItems:"center",
       color:"white",    
       fontSize:"30px",
       paddingLeft:"10px"
@@ -225,16 +226,17 @@ function Header({
     borderColor:"#ffffff",
     fontSize:15,
     width:"150px",
-    borderRadius: "20px"
+    borderRadius: "20px",
+   
  }
 
 
  const container={
   display:"flex",
-  backgroundColor:"#222222ff",  
+  backgroundColor:"#1f282b",  
   width:"100%",
-  height:"110px",
-  justifyContent:"space-between",
+  height:"250px",
+  justifyContent:"space-around",
   alignItems:"center",
   padding:"20px"  
 }
@@ -243,6 +245,10 @@ function Header({
   textAlign:"center",   
     fontSize:15,   
     color:"white"
+ }
+
+ const logoStyle= {
+    height:"200px"
  }
   /*
    // infos web3
@@ -260,22 +266,28 @@ function Header({
 
     return(    
         <div style={container}>         
-            
+           
+           
+           
               <div style={styleTitreBack}>
-                            <div className="header-title" style={styleTitreBack}>
-                                    TriggerMyContract
-                            </div>
-                        </div> 
-                   <div id="prepare" >
-                      <button id="btn-connect" style={boutonMenu}> connect</button>
-                  </div>
-                  <div id="connected" style={displayNone}>
+                 <img  style= {logoStyle} src={logo}></img>
+                     
+                                <div className="header-title" style={styleTitreBack}>
+                                        TriggerMyContract
+                                </div>
+              </div> 
+                 
+              <div>
+                    <button id="btn-connect" style={boutonMenu}> connect</button>
+              </div>
+
+              <div id="connected" style={displayNone}>
                       <div id="header" >    
                         <button id="btn-disconnect"  style={boutonMenu}> disconnect</button>
                                     <div  style={styleAddr} id='selected-account'>   </div>
                                     <div id="network-name" style={wrongNetworkMess}></div>
                         </div>
-                    </div>
+              </div>
         </div>
     );
 }

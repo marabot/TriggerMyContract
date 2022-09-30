@@ -2,6 +2,7 @@
 import './App.css';
 import TriggerCardList from './components/triggerCard/TriggerCardList.js';
 import AddButton from './components/buttonAddTrigger/AddButton.js';
+import WelcomeCard from './components/welcomeCard/WelcomeCard.js';
 import {getAllTriggers} from './utils/firebase.js';
 import HEADER from './components/Header.js';
 import React, { useState, useEffect } from 'react';
@@ -28,7 +29,8 @@ function App() {
     width:"50%",
     //backgroundColor:"#51111120", 
     borderColor:"#f33fff",
-    borderRadius:"20px"
+    borderRadius:"20px",
+    backgroundColor:"#1f282b"
  }
 
 
@@ -40,15 +42,19 @@ function App() {
       setTriggers(all);  
       console.log("cchhhhain");
       console.log(ChainId);
+      
+      document.body.style.backgroundColor = "#1f282b";
+
     } 
     
     init();
   },[ChainId]);
-    
+  
+  
   
   const displayAllTriggers=()=>{
     if (UserTriggers.length==0){
-      return <div>Create your Trigger by connecting your wallet</div>;
+      return <div ><WelcomeCard></WelcomeCard></div>;
 
     }else
     {
