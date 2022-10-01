@@ -7,7 +7,6 @@ import {getAllTriggers} from './utils/firebase.js';
 import HEADER from './components/Header.js';
 import React, { useState, useEffect } from 'react';
 import DepositButton from './components/buttonDeposit/DepositButton.js';
-import { findByLabelText } from '@testing-library/react';
 const path = require('path');
 require("dotenv").config({ path: path.resolve(__dirname, '..', '.env') });
 
@@ -53,7 +52,7 @@ function App() {
   
   
   const displayAllTriggers=()=>{
-    if (UserTriggers.length==0){
+    if (UserTriggers.length===0){
       return <div ><WelcomeCard></WelcomeCard></div>;
 
     }else

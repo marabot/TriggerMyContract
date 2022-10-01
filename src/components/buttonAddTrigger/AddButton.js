@@ -7,8 +7,8 @@ import {addToDB} from '../../utils/firebase.js';
 function AddButton({userAddress, chainId}){
   
   
-    const [ChainId, setChainId] = useState('');
-    
+    const [ChainId, setChainId] = useState('');  
+    const [Label, setLabel] = useState('');
     const [ToContract, setToContract] = useState('');
     const [FunctionToCall, setFunctionToCall] =useState('');
     const [Timing, setTiming] = useState('daily');   
@@ -20,7 +20,7 @@ function AddButton({userAddress, chainId}){
     
     const handleCloseAndSave = () => {    
         
-       addToDB(userAddress, ChainId, ToContract, FunctionToCall, Timing );      
+       addToDB(Label, userAddress, ChainId, ToContract, FunctionToCall, Timing );      
        setToContract('');
        setFunctionToCall('');
        setTiming('daily');
@@ -37,7 +37,7 @@ function AddButton({userAddress, chainId}){
             setChainId(chainId);
         } 
      
-        if (userAddress==undefined) {
+        if (userAddress===undefined) {
             document.querySelector("#buttonAdd").disabled = 1;
         }else
         {
@@ -75,6 +75,8 @@ function AddButton({userAddress, chainId}){
                     </Modal.Header>
                     <Modal.Body>
                         <form>    
+                        <label>Name</label><br/>
+                        <input value={Label} type="text" name="to" onChange={e=>setLabel(e.target.value)}/><br/>
                         <label>to</label><br/>
                         <input value={ToContract} type="text" name="to" onChange={e=>setToContract(e.target.value)}/><br/>
                         <label>function to call</label><br/>

@@ -25,24 +25,31 @@ const mnemonic=process.env.REACT_APP_MNEMONIC_MAIN;
 
 export async function getAllTriggers() {
     const tabReturn = [];
-    const docs = await getDocs(collection(db, "triggers"));   
+    try{
+        const docs = await getDocs(collection(db, "triggers"));   
 
-    docs.forEach((doc) => {
-        const datas= doc.data();
-           
-            tabReturn.push(            
-                    new Trigger(
-                        doc.id,
-                        datas.maker,
-                        datas.chain,
-                        datas.contractToCall,
-                        datas.functionToCall,
-                        datas.interval,
-                        datas.inWork,
-                        datas.lastTick
-                        )
-            );   
-        });    
+        docs.forEach((doc) => {
+            const datas= doc.data();
+               
+                tabReturn.push(            
+                        new Trigger(
+                            doc.id,
+                            datas.label,
+                            datas.maker,
+                            datas.chain,
+                            datas.contractToCall,
+                            datas.functionToCall,
+                            datas.interval,
+                            datas.inWork,
+                            datas.lastTick
+                            )
+                );   
+            });    
+    }catch(e){
+      console.log("pas de trigers en BD");
+
+    }
+    
     return tabReturn;
 }
 
@@ -151,6 +158,7 @@ export async function getTriggerByAddrFrom(address, web3){
 
         tabReturn.push(
             Trigger(
+                    datas.label,
                     datas.maker,
                     datas.chain,
                     datas.contractToCall,
@@ -173,9 +181,10 @@ export async function switchTriggerState(id, newValue){
    return result;
 }
 
-export async function addToDB(userAddr, network, contractAddr, functionToCall, interval){
+export async function addToDB(label, userAddr, network, contractAddr, functionToCall, interval){
     try {
     const docRef = await addDoc(collection(db, "triggers"), {
+        label:label,
         maker: userAddr,
         chain : network,
         contractToCall : contractAddr,

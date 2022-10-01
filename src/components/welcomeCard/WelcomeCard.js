@@ -1,5 +1,3 @@
-import { CarouselItem } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
 
 function WelcomeCard(triggers){
     // console.log("Card List");
@@ -7,8 +5,7 @@ function WelcomeCard(triggers){
    
 
     const triggersContainer={
-        display:"flex",
-        
+        display:"flex",        
         flexDirection:"column",
         color:"white",
         padding:"12px",
@@ -34,7 +31,7 @@ function WelcomeCard(triggers){
                 <p>2 - Send Some Funds</p>
                 <p>3 - Turn on  you Task, and be carefree</p>
                 
-        </div>
+             </div>
                 
         <p style={plzConnect}> Connect to create your first automated Trigger</p>
 

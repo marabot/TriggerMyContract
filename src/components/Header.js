@@ -265,19 +265,17 @@ function Header({
 
 
     return(    
-        <div style={container}>         
-           
-           
+        <div style={container}>    
            
               <div style={styleTitreBack}>
-                 <img  style= {logoStyle} src={logo}></img>
+                 <img  style= {logoStyle} alt="" src={logo}></img>
                      
                                 <div className="header-title" style={styleTitreBack}>
                                         TriggerMyContract
                                 </div>
               </div> 
                  
-              <div>
+              <div id="prepare">
                     <button id="btn-connect" style={boutonMenu}> connect</button>
               </div>
 

@@ -37,7 +37,7 @@ function DepositButton(userWallet){
           setUserAddr(userWallet);          
         } 
         
-        if (userWallet.userAddress==undefined) {
+        if (userWallet.userAddress===undefined) {
             document.querySelector("#buttonDeposit").disabled = 1;
         }else
         {
