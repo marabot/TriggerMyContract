@@ -11,6 +11,8 @@ function DepositButton(userWallet){
     const [DepositValue, setDepositValue] = useState(0);
     const [show, setShow] = useState(false); 
     const handleClose = () => setShow(false); 
+    const handleShow = () => setShow(true);    
+       
     
     /*
     console.log("infos !!");
@@ -27,9 +29,7 @@ function DepositButton(userWallet){
        setShow(false);
     };
 
-    const handleShow = () => {
-        setShow(true);    
-    };
+  
 
     useEffect(()=>{
         
