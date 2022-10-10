@@ -22,13 +22,15 @@ function WelcomeCard(triggers){
         padding:"50px"
 
     }
-  
+  //TODO afficher TMC adress quadn connecté
     return(    
         <div >
             <div
             style = {triggersContainer}>
-                <p>1 - Create your automated Trigger</p>
-                <p>2 - Send Some Funds</p>
+               
+                <p>1 - Connect and send some Funds to the TMCaddress automatically created</p>
+                <p>2 - Create your automated Trigger</p>
+                
                 <p>3 - Turn on  you Task, and be carefree</p>
                 
              </div>

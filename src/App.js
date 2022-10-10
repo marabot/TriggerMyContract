@@ -86,14 +86,8 @@ function App() {
           <AddButton 
             userAddress={account[0]}  
             chainId={ChainId}    
-          ></AddButton>
-
-          <DepositButton
-            userAddress={account[0]}
-            web3={Web3}
-              
-          ></DepositButton> 
-        </div>
+          ></AddButton>         
+      </div>
 
         {displayAllTriggers(UserTriggers)}
         
