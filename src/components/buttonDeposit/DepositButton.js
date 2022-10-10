@@ -10,6 +10,8 @@ function DepositButton(userWallet){
     const [UserAddr, setUserAddr] = useState('');
     const [DepositValue, setDepositValue] = useState(0);
     const [show, setShow] = useState(false); 
+
+    
     const handleClose = () => setShow(false); 
     const handleShow = () => setShow(true);    
        

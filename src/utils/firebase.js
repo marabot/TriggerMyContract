@@ -129,11 +129,11 @@ export async function createUserWallet(userAddr){
     console.log(newTMCWallet);
     console.log(newTMCWallet.address);
 
-   // - Générer wallet user
-  
+   // - Générer wallet user  
     try {
         await setDoc(doc(db, "accounts", userAddr.userAddress), {
-            walletTMC:newTMCWallet.address
+            walletTMC:newTMCWallet.address,
+            mnemonicIndex: nextWalletIndex
         });
 
         // incrementation nextWallet

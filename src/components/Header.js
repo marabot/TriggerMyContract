@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import Web3 from 'web3';
 import Web3Modal from "web3modal";
 import logo from "./cmonDoSomethingcontract.png";
-
+import {TryRegisterUser} from '../utils/firebase.js';
 
 function Header({
      setWeb3, setAccounts, setChainId
@@ -111,7 +111,9 @@ function Header({
         // Display fully loaded UI for wallet data
         document.querySelector("#prepare").style.display = "none";
         document.querySelector("#connected").style.display = "block";
-      
+        console.log("bon account") ;
+        console.log(accounts[0]);
+        await TryRegisterUser({userAddress:accounts[0]});
       }
     
       async function refreshAccountData() {

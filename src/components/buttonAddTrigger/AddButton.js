@@ -53,6 +53,7 @@ function AddButton({userAddress, chainId}){
        
         return (
             <select name="timing" onChange={e=>setTiming(e.target.value)}>  
+                <option value="every minute">every minute</option>
                 <option value="hourly">hourly</option>
                 <option value="daily">daily</option>
                 <option value="weekly">weekly</option>
