@@ -25,36 +25,48 @@ function DepositButton(userWallet){
 
     //const TMC_AccountsContract = new ethers.Contract("0x3c9dCDE8541444b9019e0f9f70bDCdd3bA8AA6cB", TMC_Accounts, userWallet);    
     const deposit = async () => {    
-       await TryRegisterUser(UserAddr);
+      // TODO transaction de depot
       // TMC_AccountsContract.deposit({value:DepositValue});
 
        setShow(false);
     };
 
   
+    const style= {
+        margin:"5px",
+    }
+
 
     useEffect(()=>{
         
         const init = async()=>{ 
+          console.log("deposit useraddr");
+          console.log(userWallet);
+          console.log(userWallet.userAddress);
           setUserAddr(userWallet);          
-        } 
-        
-        if (userWallet.userAddress===undefined) {
-            document.querySelector("#buttonDeposit").disabled = 1;
-        }else
-        {
-            document.querySelector("#buttonDeposit").disabled = 0;
         }
         
        
-        init();
+        
+       
+        init().then(()=>{
+            if (userWallet.userAddress===undefined) {
+                document.querySelector("#buttonDeposit").disabled = 1;
+            }else
+            {
+                document.querySelector("#buttonDeposit").disabled = 0;
+            }
+
+
+        });
       },[userWallet]);   
      
+ 
 
     return(            
        
         <div>
-         <Button id="buttonDeposit" variant="primary" onClick={handleShow}> Deposit</Button> 
+         <Button id="buttonDeposit" variant="primary" onClick={handleShow} style={style} > Deposit</Button> 
 
                 <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
 

@@ -1,8 +1,11 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Web3 from 'web3';
 import Web3Modal from "web3modal";
 import logo from "./cmonDoSomethingcontract.png";
 import {TryRegisterUser} from '../utils/firebase.js';
+import { findByLabelText } from "@testing-library/react";
+import DepositButton from "./buttonDeposit/DepositButton";
+import WithdrawButton from "./WithdrawButton/WithdrawButton";
 
 function Header({
      setWeb3, setAccounts, setChainId
@@ -17,6 +20,9 @@ function Header({
     let selectedAccount;
 
     let web3;
+
+   
+    const [UserAddr, SetUserAddr]= useState();
 
     function init() {
 
@@ -104,7 +110,9 @@ function Header({
         // MetaMask does not give you all accounts, only the selected account
         //console.log("Got accounts", accounts);
         selectedAccount = accounts[0];
-        
+
+       
+
         selectedAccount=accounts[0].substring(0,5)+ "..." + accounts[0].substring(accounts[0].length-3)
         document.querySelector("#selected-account").textContent = selectedAccount;
   
@@ -114,6 +122,7 @@ function Header({
         console.log("bon account") ;
         console.log(accounts[0]);
         await TryRegisterUser({userAddress:accounts[0]});
+        SetUserAddr(accounts[0]);
       }
     
       async function refreshAccountData() {
@@ -187,6 +196,7 @@ function Header({
 
         setWeb3([]);
         setAccounts([]);
+        SetUserAddr(undefined);
         
       }
       
@@ -200,16 +210,18 @@ function Header({
     });
 
     const displayNone={
-        display :"none"
+      width:"400px",
+      display :"none"
     }
 
   
   const styleAddr= {
-      color:"white",
-      textAlign:"center",      
+    display:"flex",
+    alignItems:"center",
+      color:"white",   
       fontSize:"20px",
       borderColor:"black",
-      borderSize:"3"
+      borderSize:"3",
   }
   
   
@@ -228,7 +240,9 @@ function Header({
     borderColor:"#ffffff",
     fontSize:15,
     width:"150px",
+    height:"30px",
     borderRadius: "20px",
+    marginLeft:"15px"
    
  }
 
@@ -244,7 +258,6 @@ function Header({
 }
 
  const wrongNetworkMess={
-  textAlign:"center",   
     fontSize:15,   
     color:"white"
  }
@@ -252,6 +265,41 @@ function Header({
  const logoStyle= {
     height:"200px"
  }
+
+ const connectContainer= {
+  display:"flex",
+  color:"white", 
+  width:"300px",
+  flexDirection:"column"
+  
+}
+
+
+const connectLine1= {
+  display:"flex",
+  flexDirection:"row", 
+  justifyContent:"flex-end",
+  alignItems:"center",
+  paddingBottom:"15px"
+  
+}
+
+const connectLine2= {
+  display:"flex",
+  flexDirection:"row", 
+  justifyContent:"space-around",
+  paddingBottom:"8px"
+  
+}
+
+const connectLine3= {
+  display:"flex",
+  flexDirection:"row", 
+  justifyContent:"flex-end"
+  
+}
+ 
+ 
   /*
    // infos web3
    <div id="accounts">  </div>
@@ -259,35 +307,44 @@ function Header({
   */
 
    useEffect(()=>{
-            
+   
+
     
     //init();
     },[]);
 
-
+// TODO display founds
 
     return(    
-        <div style={container}>    
-           
+        <div style={container}>               
               <div style={styleTitreBack}>
-                 <img  style= {logoStyle} alt="" src={logo}></img>
-                     
+                 <img  style= {logoStyle} alt="" src={logo}></img>                     
                                 <div className="header-title" style={styleTitreBack}>
                                         TriggerMyContract
                                 </div>
               </div> 
-                 
-              <div id="prepare">
-                    <button id="btn-connect" style={boutonMenu}> connect</button>
-              </div>
+            <div style={connectContainer}>
+              <div style={connectLine1}> 
+                    <div style={styleAddr} id='selected-account'> fefgeaz </div>
+                    <div id="prepare">
+                       <button id="btn-connect" style={boutonMenu}> connect</button>
+                    </div>
+                    <div id="connected" style={displayNone}>
+                        <button id="btn-disconnect"  style={boutonMenu}> disconnect</button>       
+                    </div>
+               </div>
 
-              <div id="connected" style={displayNone}>
-                      <div id="header" >    
-                        <button id="btn-disconnect"  style={boutonMenu}> disconnect</button>
-                                    <div  style={styleAddr} id='selected-account'>   </div>
-                                    <div id="network-name" style={wrongNetworkMess}></div>
-                        </div>
+              <div style={connectLine2}>
+                <div >Founds : 5€</div>
+                <div id="network-name" style={wrongNetworkMess}> - </div> 
               </div>
+              <div style={connectLine3}>
+                <DepositButton
+                      userAddress={UserAddr}
+                />
+                <WithdrawButton/>
+              </div>             
+           </div>
         </div>
     );
 }
