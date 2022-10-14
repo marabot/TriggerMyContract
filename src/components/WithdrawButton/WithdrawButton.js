@@ -1,0 +1,81 @@
+import React, { useEffect,useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import {TryRegisterUser} from '../../utils/firebase.js';
+require('dotenv').config();
+
+
+function WithdrawButton(userWallet){
+  
+    const [UserAddr, setUserAddr] = useState('');
+    const [show, setShow] = useState(false); 
+    const handleClose = () => setShow(false); 
+    const handleShow = () => setShow(true);    
+       
+    
+    /*
+    console.log("infos !!");
+    console.log(userWallet);
+    console.log(TMC_Accounts);
+    console.log(web3);
+    */
+
+    //const TMC_AccountsContract = new ethers.Contract("0x3c9dCDE8541444b9019e0f9f70bDCdd3bA8AA6cB", TMC_Accounts, userWallet);    
+    const deposit = async () => {    
+      // TODO transaction de retrait
+      // TMC_AccountsContract.deposit({value:DepositValue});
+
+       setShow(false);
+    };
+
+    const style= {
+        margin:"5px"
+    }
+
+    useEffect(()=>{
+        
+        const init = async()=>{ 
+          setUserAddr(userWallet);          
+        } 
+        
+        if (userWallet.userAddress===undefined) {
+            document.querySelector("#buttonDeposit").disabled = 1;
+        }else
+        {
+            document.querySelector("#buttonDeposit").disabled = 0;
+        }
+        
+       
+        init();
+      },[userWallet]);   
+     
+
+    return(            
+       
+        <div>
+         <Button id="buttonDeposit" variant="primary" onClick={handleShow} style={style}> Withdraw</Button> 
+
+                <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
+
+                    <Modal.Header closeButton>
+                            <Modal.Title>Withdraw</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>This action will sent back all your funds for this network and Triggers will be paused.</p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={deposit}>
+                            Withdraw
+                        </Button>
+                    </Modal.Footer>   
+                </Modal>       
+          
+        </div>            
+    );
+}
+
+export default WithdrawButton;
