@@ -6,6 +6,7 @@ import {TryRegisterUser} from '../utils/firebase.js';
 import { findByLabelText } from "@testing-library/react";
 import DepositButton from "./buttonDeposit/DepositButton";
 import WithdrawButton from "./WithdrawButton/WithdrawButton";
+import {getTMCWalletAddress} from "../utils/firebase.js";
 
 function Header({
      setWeb3, setAccounts, setChainId
@@ -21,7 +22,7 @@ function Header({
 
     let web3;
 
-   
+    const[Provider, setProvider] = useState();
     const [UserAddr, SetUserAddr]= useState();
 
     function init() {
@@ -74,6 +75,7 @@ function Header({
             const provider = new Web3.providers.HttpProvider(
               "http://localhost:9545"
             );
+            setProvider(provider);
             web3 = new Web3(provider);
             console.log("No web3 instance injected, using Local web3.");
             setWeb3(web3);
@@ -96,7 +98,10 @@ function Header({
         document.querySelector("#network-name").textContent = "Ethereum MainNet";
       }else if (chainId===1337){
         document.querySelector("#network-name").textContent = "Truffle Local";
-      }       
+      }  
+      else if (chainId===5){
+        document.querySelector("#network-name").textContent = "Goerli";
+      }           
       else{
         document.querySelector("#network-name").textContent = "unknowNetwork";
       }
@@ -112,10 +117,17 @@ function Header({
         selectedAccount = accounts[0];
 
        
-
+        // Display connected account
         selectedAccount=accounts[0].substring(0,5)+ "..." + accounts[0].substring(accounts[0].length-3)
         document.querySelector("#selected-account").textContent = selectedAccount;
-  
+      
+       // Display balance TMCwallet
+       const tmcwalletAddr = await getTMCWalletAddress(accounts[0]);   
+       const balance = await web3.eth.getBalance(tmcwalletAddr);        
+       document.querySelector("#balanceTMC").textContent = web3.utils.fromWei(balance).toString().substring(0,10);
+        
+
+
         // Display fully loaded UI for wallet data
         document.querySelector("#prepare").style.display = "none";
         document.querySelector("#connected").style.display = "block";
@@ -138,7 +150,7 @@ function Header({
         // with Ethereum node via JSON-RPC and loads chain data
         // over an API call.
         if (document.querySelector("#btn-connect"))document.querySelector("#btn-connect").setAttribute("disabled", "disabled");
-        await fetchAccountData(provider);
+        await fetchAccountData(Provider);
         if (document.querySelector("#btn-connect"))document.querySelector("#btn-connect").removeAttribute("disabled");
       }
       
@@ -148,6 +160,7 @@ function Header({
         //console.log("Opening a dialog", web3Modal);
         try {
           provider = await web3Modal.connect();
+          setProvider(provider);
          
         } catch(e) {
           console.log("Could not get a wallet connection", e);
@@ -193,7 +206,7 @@ function Header({
         // Set the UI back to the initial state
         document.querySelector("#prepare").style.display = "block";
         document.querySelector("#connected").style.display = "none";
-
+        document.querySelector("#selected-account").textContent = "";
         setWeb3([]);
         setAccounts([]);
         SetUserAddr(undefined);
@@ -325,7 +338,7 @@ const connectLine3= {
               </div> 
             <div style={connectContainer}>
               <div style={connectLine1}> 
-                    <div style={styleAddr} id='selected-account'> fefgeaz </div>
+                    <div style={styleAddr} id='selected-account'>  </div>
                     <div id="prepare">
                        <button id="btn-connect" style={boutonMenu}> connect</button>
                     </div>
@@ -335,7 +348,7 @@ const connectLine3= {
                </div>
 
               <div style={connectLine2}>
-                <div >Founds : 5€</div>
+                <div id="balanceTMC">Founds : 5€</div>
                 <div id="network-name" style={wrongNetworkMess}> - </div> 
               </div>
               <div style={connectLine3}>

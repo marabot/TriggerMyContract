@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, addDoc,updateDoc, doc,getDocs,setDoc, collection } from "firebase/firestore";
+import { getFirestore, addDoc,updateDoc, doc,getDoc,getDocs,setDoc, collection } from "firebase/firestore";
 require('dotenv').config();
 
 const ethers= require("ethers");
@@ -112,6 +112,20 @@ export async function TryRegisterUser(userAddr){
       
 };
 
+export async function getTMCWalletIndex(userAddress){
+    const docRef = doc(db, "accounts", userAddress);  
+    const docSnap = await getDoc(docRef);
+
+    return docSnap.data().mnemonicIndex;
+}
+
+
+export async function getTMCWalletAddress(userAddress){
+    const docRef = doc(db, "accounts", userAddress);  
+    const docSnap = await getDoc(docRef);
+
+    return docSnap.data().walletTMC;
+}
 export async function createUserWallet(userAddr){
    // console.log("try to create");
    // console.log(userAddr);
