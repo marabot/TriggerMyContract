@@ -12,7 +12,8 @@ function AddButton({userAddress, chainId}){
     const [ToContract, setToContract] = useState('');
     const [FunctionToCall, setFunctionToCall] =useState('');
     const [Timing, setTiming] = useState('daily');   
-   
+    const [UserAddr, setUserAddr] = useState('');
+
     const [show, setShow] = useState(false); 
     const handleClose = () => setShow(false); 
     
@@ -33,21 +34,15 @@ function AddButton({userAddress, chainId}){
     };
 
     useEffect(()=>{        
-        const init = async()=>{          
-            setChainId(chainId);
-        } 
-     
+          
         if (userAddress===undefined) {
             document.querySelector("#buttonAdd").disabled = 1;
         }else
         {
             document.querySelector("#buttonAdd").disabled = 0;
-        }
-
-
-    
-        init();
-      },[chainId, userAddress]);
+        }    
+     
+      },[userAddress]);
 
     const options = function(){   
        

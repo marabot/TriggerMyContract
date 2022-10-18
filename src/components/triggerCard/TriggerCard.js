@@ -91,7 +91,7 @@ function TriggerCard(trigger){
                         <td className="cellTabTriggerInfos">{trigger.trigger.contractToCall}</td>   
                         <td className="cellTabTriggerCentered">{OnOffButton(trigger.trigger.id)}</td>     
                         <td className = "cellTabTrigger"> {stateColor(Running)}</td>
-                        <td colspan="5"><div style={detailsLink} onClick={detailsClick}>Details...</div></td>    
+                        <td colSpan="5"><div style={detailsLink} onClick={detailsClick}>Details...</div></td>    
                      </tr>
                     
                 </tbody>

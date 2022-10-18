@@ -21,9 +21,9 @@ function Header({
     let selectedAccount;
 
     let web3;
-
-    const[Provider, setProvider] = useState();
-    const [UserAddr, SetUserAddr]= useState();
+    let userAddreProp=1;
+  
+    const [UserAddr, SetUserAddr]= useState([]);
 
     function init() {
 
@@ -46,7 +46,7 @@ function Header({
          onConnect();
  
 
-        web3Modal = new Web3Modal({
+          web3Modal = new Web3Modal({
           cacheProvider: false, // optional
           providerOptions, // required
         });      
@@ -75,7 +75,7 @@ function Header({
             const provider = new Web3.providers.HttpProvider(
               "http://localhost:9545"
             );
-            setProvider(provider);
+            
             web3 = new Web3(provider);
             console.log("No web3 instance injected, using Local web3.");
             setWeb3(web3);
@@ -87,18 +87,19 @@ function Header({
     
       // Get connected chain id from Ethereum node
       const chainId = await web3.eth.getChainId();
-      console.log("chainId");
-      console.log(chainId);
+     // console.log("chainId");
+      //console.log(chainId);
       setChainId(chainId);
 
-        // Load chain information over an HTTP API
+      // Load chain information over an HTTP API
        
       if (chainId===1)
       {
         document.querySelector("#network-name").textContent = "Ethereum MainNet";
-      }else if (chainId===1337){
+      }
+      else if (chainId===1337){
         document.querySelector("#network-name").textContent = "Truffle Local";
-      }  
+      }
       else if (chainId===5){
         document.querySelector("#network-name").textContent = "Goerli";
       }           
@@ -123,18 +124,22 @@ function Header({
       
        // Display balance TMCwallet
        const tmcwalletAddr = await getTMCWalletAddress(accounts[0]);   
-       const balance = await web3.eth.getBalance(tmcwalletAddr);        
-       document.querySelector("#balanceTMC").textContent = web3.utils.fromWei(balance).toString().substring(0,10);
+       if (tmcwalletAddr!=undefined){
         
+       const balance = await web3.eth.getBalance(tmcwalletAddr);        
+           document.querySelector("#balanceTMC").textContent = web3.utils.fromWei(balance).toString().substring(0,10);       
+       }
 
 
         // Display fully loaded UI for wallet data
         document.querySelector("#prepare").style.display = "none";
         document.querySelector("#connected").style.display = "block";
-        console.log("bon account") ;
-        console.log(accounts[0]);
-        await TryRegisterUser({userAddress:accounts[0]});
+        userAddreProp={addr:accounts[0]};
         SetUserAddr(accounts[0]);
+      
+       // console.log(accounts[0]);
+        await TryRegisterUser({userAddress:accounts[0]});
+       
       }
     
       async function refreshAccountData() {
@@ -150,7 +155,7 @@ function Header({
         // with Ethereum node via JSON-RPC and loads chain data
         // over an API call.
         if (document.querySelector("#btn-connect"))document.querySelector("#btn-connect").setAttribute("disabled", "disabled");
-        await fetchAccountData(Provider);
+        await fetchAccountData(provider);
         if (document.querySelector("#btn-connect"))document.querySelector("#btn-connect").removeAttribute("disabled");
       }
       
@@ -160,7 +165,7 @@ function Header({
         //console.log("Opening a dialog", web3Modal);
         try {
           provider = await web3Modal.connect();
-          setProvider(provider);
+          
          
         } catch(e) {
           console.log("Could not get a wallet connection", e);
@@ -183,6 +188,7 @@ function Header({
         });
       
         await refreshAccountData();
+      
       }
     
       async function onDisconnect() {
@@ -199,8 +205,10 @@ function Header({
           // Depending on your use case you may want or want not his behavir.
           await web3Modal.clearCachedProvider();
           provider = null;
+         
         }
       
+
         selectedAccount = null;
       
         // Set the UI back to the initial state
@@ -209,7 +217,7 @@ function Header({
         document.querySelector("#selected-account").textContent = "";
         setWeb3([]);
         setAccounts([]);
-        SetUserAddr(undefined);
+        SetUserAddr([]);
         
       }
       
@@ -222,10 +230,25 @@ function Header({
       if(disconnectBtn)disconnectBtn.addEventListener("click", onDisconnect);
     });
 
-    const displayNone={
-      width:"400px",
-      display :"none"
+
+    const depositTest =   ()=>{
+
+      alert("amount");
     }
+  const deposit =  async  (amount)=>{
+
+    const TMCWallet  = await getTMCWalletAddress(UserAddr);
+    var options = {to:TMCWallet, value:amount}; 
+    const tx = await web3.eth.sendTransaction(options);   
+    console.log("Tx :");  
+    console.log(tx); 
+  }
+
+
+  const displayNone={
+    width:"400px",
+    display :"none"
+  }
 
   
   const styleAddr= {
@@ -320,11 +343,8 @@ const connectLine3= {
   */
 
    useEffect(()=>{
-   
-
-    
-    //init();
-    },[]);
+  
+    },[UserAddr]);
 
 // TODO display founds
 
@@ -353,9 +373,13 @@ const connectLine3= {
               </div>
               <div style={connectLine3}>
                 <DepositButton
-                      userAddress={UserAddr}
-                />
-                <WithdrawButton/>
+                      userWallet={UserAddr}>
+
+                </DepositButton>
+
+                <WithdrawButton
+                      userWallet={UserAddr}>
+                </WithdrawButton>
               </div>             
            </div>
         </div>

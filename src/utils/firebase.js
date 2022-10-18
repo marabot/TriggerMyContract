@@ -4,7 +4,6 @@ require('dotenv').config();
 
 const ethers= require("ethers");
 
-console.log(process.env);
 const Trigger = require("../entities/Trigger");
 
 const firebaseConfig = {
@@ -57,22 +56,15 @@ export async function getAllTriggers() {
 export async function TryRegisterUser(userAddr){
     
     let alreadyExist= false
-    console.log("docRef");
-    
-
-  
-    console.log("mnemon");
-    console.log(process.env);
-   
-    console.log(process.env.REACT_APP_MNEMONIC_MAIN);
+ 
     try{
         const docs = await getDocs(collection(db, "accounts"));    
         //docRef = doc(db, "accounts", userAddr);
         //console.log(docs);
         docs.forEach((doc) => {
             
-             console.log(doc.id);
-             console.log(userAddr);
+            // console.log(doc.id);
+             //console.log(userAddr);
             if (doc.id===userAddr.userAddress)
             {
                 alreadyExist=true;
@@ -82,7 +74,7 @@ export async function TryRegisterUser(userAddr){
         console.log("exist?");
         console.log(alreadyExist);*/
         if (!alreadyExist){
-            createUserWallet(userAddr);
+            await createUserWallet(userAddr);
         }
        
     }catch(e){
@@ -123,9 +115,12 @@ export async function getTMCWalletIndex(userAddress){
 export async function getTMCWalletAddress(userAddress){
     const docRef = doc(db, "accounts", userAddress);  
     const docSnap = await getDoc(docRef);
-
-    return docSnap.data().walletTMC;
+    if (docSnap.exists())return docSnap.data().walletTMC;
+    return undefined;
 }
+
+
+
 export async function createUserWallet(userAddr){
    // console.log("try to create");
    // console.log(userAddr);

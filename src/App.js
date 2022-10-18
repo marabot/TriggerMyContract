@@ -6,7 +6,6 @@ import WelcomeCard from './components/welcomeCard/WelcomeCard.js';
 import {getAllTriggers} from './utils/firebase.js';
 import HEADER from './components/Header.js';
 import React, { useState, useEffect } from 'react';
-import DepositButton from './components/buttonDeposit/DepositButton.js';
 const path = require('path');
 require("dotenv").config({ path: path.resolve(__dirname, '..', '.env') });
 
@@ -36,12 +35,8 @@ function App() {
   useEffect(()=>{
 
     const init = async()=>{ 
-      let all = await getAllTriggers();     
-      console.log("init"); 
-      setTriggers(all);  
-      console.log("cchhhhain");
-      console.log(ChainId);
-      
+      let all = await getAllTriggers();   
+      setTriggers(all);        
       document.body.style.backgroundColor = "#1f282b";
 
     } 

@@ -5,7 +5,7 @@ import {TryRegisterUser} from '../../utils/firebase.js';
 require('dotenv').config();
 
 
-function WithdrawButton(userWallet){
+function WithdrawButton({userWallet}){
   
     const [UserAddr, setUserAddr] = useState('');
     const [show, setShow] = useState(false); 
@@ -21,10 +21,10 @@ function WithdrawButton(userWallet){
     */
 
     //const TMC_AccountsContract = new ethers.Contract("0x3c9dCDE8541444b9019e0f9f70bDCdd3bA8AA6cB", TMC_Accounts, userWallet);    
-    const deposit = async () => {    
+    const withdraw = async () => {    
       // TODO transaction de retrait
       // TMC_AccountsContract.deposit({value:DepositValue});
-
+      console.log(userWallet);
        setShow(false);
     };
 
@@ -38,11 +38,11 @@ function WithdrawButton(userWallet){
           setUserAddr(userWallet);          
         } 
         
-        if (userWallet.userAddress===undefined) {
-            document.querySelector("#buttonDeposit").disabled = 1;
+        if (userWallet.length===0) {
+            document.querySelector("#buttonWithdraw").disabled = 1;
         }else
         {
-            document.querySelector("#buttonDeposit").disabled = 0;
+            document.querySelector("#buttonWithdraw").disabled = 0;
         }
         
        
@@ -53,7 +53,7 @@ function WithdrawButton(userWallet){
     return(            
        
         <div>
-         <Button id="buttonDeposit" variant="primary" onClick={handleShow} style={style}> Withdraw</Button> 
+         <Button id="buttonWithdraw" variant="primary" onClick={handleShow} style={style}> Withdraw</Button> 
 
                 <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
 
@@ -68,7 +68,7 @@ function WithdrawButton(userWallet){
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={deposit}>
+                        <Button variant="primary" onClick={withdraw}>
                             Withdraw
                         </Button>
                     </Modal.Footer>   

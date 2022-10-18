@@ -1,20 +1,18 @@
 import React, { useEffect,useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import {TryRegisterUser} from '../../utils/firebase.js';
+
 require('dotenv').config();
 
 
-function DepositButton(userWallet){
+function DepositButton({userWallet, deposit}){
   
     const [UserAddr, setUserAddr] = useState('');
     const [DepositValue, setDepositValue] = useState(0);
     const [show, setShow] = useState(false); 
-
-    
+        
     const handleClose = () => setShow(false); 
-    const handleShow = () => setShow(true);    
-       
+    const handleShow = () => setShow(true);  
     
     /*
     console.log("infos !!");
@@ -24,16 +22,18 @@ function DepositButton(userWallet){
     */
 
     //const TMC_AccountsContract = new ethers.Contract("0x3c9dCDE8541444b9019e0f9f70bDCdd3bA8AA6cB", TMC_Accounts, userWallet);    
-    const deposit = async () => {    
+    const depositAction = () => {    
       // TODO transaction de depot
       // TMC_AccountsContract.deposit({value:DepositValue});
-
+       //deposit();
+       console.log(userWallet);
        setShow(false);
     };
 
   
     const style= {
         margin:"5px",
+        disabled:"1"
     }
 
 
@@ -41,32 +41,30 @@ function DepositButton(userWallet){
         
         const init = async()=>{ 
           console.log("deposit useraddr");
-          console.log(userWallet);
-          console.log(userWallet.userAddress);
-          setUserAddr(userWallet);          
+          console.log(userWallet);     
+         // alert("bihy");   
+          setUserAddr(userWallet);         
         }
-        
        
-        
-       
-        init().then(()=>{
-            if (userWallet.userAddress===undefined) {
+      
+           // alert(UserAddr);
+            if (userWallet.length===0) {
+                
                 document.querySelector("#buttonDeposit").disabled = 1;
             }else
             {
+                //console.log("ezgzesghez"); 
                 document.querySelector("#buttonDeposit").disabled = 0;
             }
-
-
-        });
+       
+        init();
       },[userWallet]);   
-     
- 
+      
 
     return(            
        
         <div>
-         <Button id="buttonDeposit" variant="primary" onClick={handleShow} style={style} > Deposit</Button> 
+         <Button id="buttonDeposit" variant="primary" onClick={handleShow} style={style}> Deposit </Button> 
 
                 <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
 
@@ -85,7 +83,7 @@ function DepositButton(userWallet){
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={deposit}>
+                        <Button variant="primary" onClick={depositAction}>
                             Deposit
                         </Button>
                     </Modal.Footer>   
