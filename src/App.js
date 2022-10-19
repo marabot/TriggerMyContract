@@ -75,6 +75,7 @@ function App() {
         setWeb3={setWeb3}
         setAccounts={setAccount}
         setChainId={setChainId}
+        
         />
         
       <div style={butAddAndDepositDiv}>

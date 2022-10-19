@@ -7,23 +7,25 @@ import { findByLabelText } from "@testing-library/react";
 import DepositButton from "./buttonDeposit/DepositButton";
 import WithdrawButton from "./WithdrawButton/WithdrawButton";
 import {getTMCWalletAddress} from "../utils/firebase.js";
+require('dotenv').config();
 
 function Header({
      setWeb3, setAccounts, setChainId
 }){    
     // Web3modal instance
     let web3Modal;
-    
+    const mnemonic=process.env.REACT_APP_MNEMONIC_MAIN;
     // Chosen wallet provider given by the dialog window
     let provider;
     
     // Address of the selected account
     let selectedAccount;
 
-    let web3;
+    let web3={id:5};
     let userAddreProp=1;
   
     const [UserAddr, SetUserAddr]= useState([]);
+    const [Web3Lib, setWeb3Lib]= useState([]);
 
     function init() {
 
@@ -34,13 +36,7 @@ function Header({
         // Built-in web browser provider (only one can exist as a time)
         // like MetaMask, Brave or Opera is added automatically by Web3modal
         const providerOptions = {
-         /* walletconnect: {
-            package: WalletConnectProvider,
-            options: {
-              // Mikko's test key - don't copy as your mileage may vary
-              infuraId: "3198ac3a6fb44350a28522ea60608de7",
-            }
-          },*/
+         
         };
         
          onConnect();
@@ -59,6 +55,7 @@ function Header({
           if (window.ethereum) {
             web3 = new Web3(window.ethereum);   
             setWeb3(web3);     
+            setWeb3Lib(web3);
             await window.ethereum.enable(); 
           
           }
@@ -67,6 +64,7 @@ function Header({
             // Use Mist/MetaMask's provider.
             web3 = window.web3;
             setWeb3(web3);
+            setWeb3Lib(web3);
             console.log("Injected web3 detected.");
           
           }
@@ -79,6 +77,7 @@ function Header({
             web3 = new Web3(provider);
             console.log("No web3 instance injected, using Local web3.");
             setWeb3(web3);
+            setWeb3Lib(web3);
        }
       
       const accounts = await web3.eth.getAccounts();
@@ -236,10 +235,17 @@ function Header({
       alert("amount");
     }
   const deposit =  async  (amount)=>{
-
+  console.log("hohh");
     const TMCWallet  = await getTMCWalletAddress(UserAddr);
-    var options = {to:TMCWallet, value:amount}; 
-    const tx = await web3.eth.sendTransaction(options);   
+    
+    let accounts = await Web3Lib.eth.getAccounts();
+
+    console.log("coucount");
+  
+    console.log(amount);
+    var options = {value:Web3Lib.utils.toWei(amount),to:TMCWallet,from:accounts[0] };  
+    console.log(Web3Lib);
+    const tx = await Web3Lib.eth.sendTransaction(options);   
     console.log("Tx :");  
     console.log(tx); 
   }
@@ -373,8 +379,8 @@ const connectLine3= {
               </div>
               <div style={connectLine3}>
                 <DepositButton
-                      userWallet={UserAddr}>
-
+                      userWallet={UserAddr}
+                      deposit={deposit}>                      
                 </DepositButton>
 
                 <WithdrawButton

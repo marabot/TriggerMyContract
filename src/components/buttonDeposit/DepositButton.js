@@ -10,7 +10,7 @@ function DepositButton({userWallet, deposit}){
     const [UserAddr, setUserAddr] = useState('');
     const [DepositValue, setDepositValue] = useState(0);
     const [show, setShow] = useState(false); 
-        
+    
     const handleClose = () => setShow(false); 
     const handleShow = () => setShow(true);  
     
@@ -25,7 +25,7 @@ function DepositButton({userWallet, deposit}){
     const depositAction = () => {    
       // TODO transaction de depot
       // TMC_AccountsContract.deposit({value:DepositValue});
-       //deposit();
+       deposit(DepositValue);
        console.log(userWallet);
        setShow(false);
     };
