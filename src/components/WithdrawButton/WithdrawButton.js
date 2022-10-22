@@ -1,17 +1,18 @@
 import React, { useEffect,useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import {TryRegisterUser} from '../../utils/firebase.js';
+
 require('dotenv').config();
 
 
-function WithdrawButton({userWallet}){
+function WithdrawButton({userWallet, withdraw}){
   
     const [UserAddr, setUserAddr] = useState('');
     const [show, setShow] = useState(false); 
     const handleClose = () => setShow(false); 
     const handleShow = () => setShow(true);    
        
+    const mnemonic=process.env.REACT_APP_MNEMONIC_MAIN;
     
     /*
     console.log("infos !!");
@@ -21,10 +22,11 @@ function WithdrawButton({userWallet}){
     */
 
     //const TMC_AccountsContract = new ethers.Contract("0x3c9dCDE8541444b9019e0f9f70bDCdd3bA8AA6cB", TMC_Accounts, userWallet);    
-    const withdraw = async () => {    
-      // TODO transaction de retrait
-      // TMC_AccountsContract.deposit({value:DepositValue});
-      console.log(userWallet);
+    const action = async () => {    
+ 
+      console.log("action");
+
+       await withdraw();
        setShow(false);
     };
 
@@ -68,7 +70,7 @@ function WithdrawButton({userWallet}){
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={withdraw}>
+                        <Button variant="primary" onClick={action}>
                             Withdraw
                         </Button>
                     </Modal.Footer>   

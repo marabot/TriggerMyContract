@@ -6,7 +6,8 @@ import {TryRegisterUser} from '../utils/firebase.js';
 import { findByLabelText } from "@testing-library/react";
 import DepositButton from "./buttonDeposit/DepositButton";
 import WithdrawButton from "./WithdrawButton/WithdrawButton";
-import {getTMCWalletAddress} from "../utils/firebase.js";
+import {getTMCWalletAddress,getTMCWalletIndex} from "../utils/firebase.js";
+const ethers= require("ethers");
 require('dotenv').config();
 
 function Header({
@@ -14,7 +15,7 @@ function Header({
 }){    
     // Web3modal instance
     let web3Modal;
-    const mnemonic=process.env.REACT_APP_MNEMONIC_MAIN;
+    
     // Chosen wallet provider given by the dialog window
     let provider;
     
@@ -230,26 +231,51 @@ function Header({
     });
 
 
-    const depositTest =   ()=>{
-
-      alert("amount");
-    }
-  const deposit =  async  (amount)=>{
-  console.log("hohh");
-    const TMCWallet  = await getTMCWalletAddress(UserAddr);
-    
-    let accounts = await Web3Lib.eth.getAccounts();
-
-    console.log("coucount");
-  
-    console.log(amount);
-    var options = {value:Web3Lib.utils.toWei(amount),to:TMCWallet,from:accounts[0] };  
-    console.log(Web3Lib);
-    const tx = await Web3Lib.eth.sendTransaction(options);   
-    console.log("Tx :");  
-    console.log(tx); 
+  const depositTest =   ()=>{
+    alert("amount");
   }
 
+  const deposit =  async  (amount)=>{
+  
+    const TMCWallet  = await getTMCWalletAddress(UserAddr);    
+    let accounts = await Web3Lib.eth.getAccounts();
+    
+    var options = {value:Web3Lib.utils.toWei(amount),to:TMCWallet,from:accounts[0] };  
+    
+    const tx = await Web3Lib.eth.sendTransaction(options);   
+   // console.log("Tx :");  
+   // console.log(tx); 
+  }
+
+  const withdraw =  async  ()=>{
+  
+    const TMCwalletIndex = await getTMCWalletIndex(UserAddr);
+   
+   
+  //  provider =  new ethers.providers.JsonRpcProvider(process.env.REACT_APP_NODE_ENDPOINT); 
+    const provider =  new ethers.providers.JsonRpcProvider(process.env.REACT_APP_NODE_ENDPOINT); 
+   
+    const TMCwallet = ethers.Wallet.fromMnemonic(process.env.REACT_APP_MNEMONIC_MAIN, `m/44'/60'/1'/0/` + TMCwalletIndex.toString());  
+    const TMCSigner = new ethers.Wallet(TMCwallet.privateKey, provider);  
+  
+   // const TMCwalletSigner = new ethers.Wallet(TMCwallet.privateKey, provider);  
+    const balance = await Web3Lib.eth.getBalance(TMCwallet.address);
+   // const balance = await TMCwalletSigner.getBalance();
+   
+
+    const balanceWei = ethers.utils.formatEther(balance);
+   
+  
+    const inttt= balanceWei.substring(0, balanceWei.length-14);   // TODO pourquoi devoir couper pour parseEthers?
+    
+    //const val =  ethers.utils.parseEther(ethers.utils.formatEther(balance));
+ 
+    const val =  ethers.utils.parseEther(inttt);
+ 
+
+    TMCSigner.sendTransaction({to:UserAddr, value:val});
+
+  }
 
   const displayNone={
     width:"400px",
@@ -384,7 +410,8 @@ const connectLine3= {
                 </DepositButton>
 
                 <WithdrawButton
-                      userWallet={UserAddr}>
+                      userWallet={UserAddr}
+                      withdraw={withdraw}>
                 </WithdrawButton>
               </div>             
            </div>
