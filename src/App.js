@@ -31,11 +31,18 @@ function App() {
     backgroundColor:"#1f282b"
  }
 
+  const reload = async()=>{
+    let all = await getAllTriggers(); 
+    console.log(all);  
+    setTriggers(all);  
+
+  }
 
   useEffect(()=>{
 
     const init = async()=>{ 
-      let all = await getAllTriggers();   
+      let all = await getAllTriggers(); 
+      console.log(all);  
       setTriggers(all);        
       document.body.style.backgroundColor = "#1f282b";
 
@@ -55,7 +62,8 @@ function App() {
       return (
         <div >
             <TriggerCardList 
-                    triggers= {UserTriggers}                
+                    triggers= {UserTriggers} 
+                    reload={reload}               
               ></TriggerCardList>   
           </div> 
       );
@@ -64,7 +72,8 @@ function App() {
 
 
   useEffect(() => { 
-   setUserTriggers(Triggers.filter(e => e.maker === account[0]));
+    
+   setUserTriggers(Triggers.filter(e => e.maker === account[0]).filter(e=>e.deleted === false));
   }, [Triggers,account]);
 
 

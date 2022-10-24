@@ -9,7 +9,8 @@ class Trigger {
         functionToCall,
         interval,
         inWork,
-        lastTick
+        lastTick,
+        deleted
         
     ) {
         this.id = docId;
@@ -21,6 +22,7 @@ class Trigger {
         this.interval = interval;
         this.inWork = inWork;
         this.lastTick = lastTick;
+        this.deleted = deleted;
     }
 }
 

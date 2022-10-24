@@ -40,7 +40,8 @@ export async function getAllTriggers() {
                             datas.functionToCall,
                             datas.interval,
                             datas.inWork,
-                            datas.lastTick
+                            datas.lastTick,
+                            datas.deleted
                             )
                 );   
             });    
@@ -174,7 +175,8 @@ export async function getTriggerByAddrFrom(address, web3){
                     datas.functionToCall,
                     datas.interval,
                     datas.inWork,
-                    datas.lastTick
+                    datas.lastTick,
+                    datas.deleted
                     )
         );   
     });    
@@ -190,6 +192,15 @@ export async function switchTriggerState(id, newValue){
    return result;
 }
 
+export async function deleteTrigger(id){
+    
+    const docRef = doc(db, "triggers", id);
+    const result = await updateDoc(docRef, {
+        deleted : true
+    });
+   return result;
+}
+
 export async function addToDB(label, userAddr, network, contractAddr, functionToCall, interval){
     try {
     const docRef = await addDoc(collection(db, "triggers"), {
@@ -200,10 +211,13 @@ export async function addToDB(label, userAddr, network, contractAddr, functionTo
         functionToCall :functionToCall,
         interval : interval, 
         inWork: false,
-        lastTick : 0
+        lastTick : 0,
+        deleted : false
     });
     console.log("Document written with ID: ", docRef.id);
     } catch (e) {
     console.error("Error adding document: ", e);
     }
 }
+
+

@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import '../../custom.css';
-import {switchTriggerState} from '../../utils/firebase.js';
+import {switchTriggerState, deleteTrigger} from '../../utils/firebase.js';
 
-function TriggerCard(trigger){
+function TriggerCard({trigger, reload}){
 
     const [Running, setRunnning] = React.useState(trigger.inWork);  
     const [DetailsDisplay, setDetailsDisplay] = useState(false);
@@ -29,6 +29,12 @@ function TriggerCard(trigger){
     {
         switchTriggerState(id, value);    
         setRunnning(value);
+    }
+
+    const deleteThisTrigger = (id)=>
+    {   
+        deleteTrigger(id);   
+        reload();
     }
     
        
@@ -67,7 +73,7 @@ function TriggerCard(trigger){
     useEffect(()=>{
 
         const init = async()=>{
-        setRunnning(trigger.trigger.inWork);    
+        setRunnning(trigger.inWork);    
         } 
 
         init();
@@ -84,14 +90,14 @@ function TriggerCard(trigger){
                         <td width="45%" className="cellTabTriggerLabel">contract called</td>
                         <td width="10%"></td>
                         <td width ="10%" className="cellTabTriggerLabel">state</td>
-                        <td width="10%"></td>
+                        <td width="10%"><div style={detailsLink} onClick={detailsClick}>Details...</div></td>
                      </tr>
                      <tr>
-                        <td className = "cellTabTriggerInfos">{trigger.trigger.label}</td>   
-                        <td className="cellTabTriggerInfos">{trigger.trigger.contractToCall}</td>   
-                        <td className="cellTabTriggerCentered">{OnOffButton(trigger.trigger.id)}</td>     
+                        <td className = "cellTabTriggerInfos">{trigger.label}</td>   
+                        <td className="cellTabTriggerInfos">{trigger.contractToCall}</td>   
+                        <td className="cellTabTriggerCentered">{OnOffButton(trigger.id)}</td>     
                         <td className = "cellTabTrigger"> {stateColor(Running)}</td>
-                        <td colSpan="5"><div style={detailsLink} onClick={detailsClick}>Details...</div></td>    
+                        <td colSpan="5"><button onClick={()=>deleteThisTrigger(trigger.id)}> Stop </button></td>    
                      </tr>
                     
                 </tbody>
@@ -106,25 +112,25 @@ function TriggerCard(trigger){
                     <table className="TabTrigger">
                             <tbody>
                                 <tr><td className = "cellTabTriggerLabel">Name</td></tr>
-                                <tr><td className = "cellTabTriggerInfos">{trigger.trigger.label}</td></tr>
+                                <tr><td className = "cellTabTriggerInfos">{trigger.label}</td></tr>
 
                                 <tr><td className = "cellTabTriggerLabel">Maker</td></tr>
-                                <tr><td className = "cellTabTriggerInfos">{trigger.trigger.maker}</td></tr>
+                                <tr><td className = "cellTabTriggerInfos">{trigger.maker}</td></tr>
 
                                 <tr><td className="cellTabTriggerLabel">contract called</td></tr>
-                                <tr><td className="cellTabTriggerInfos">{trigger.trigger.contractToCall}</td></tr>
+                                <tr><td className="cellTabTriggerInfos">{trigger.contractToCall}</td></tr>
 
                                 <tr><td className="cellTabTriggerLabel">function called</td></tr>
-                                <tr><td className="cellTabTriggerInfos">{trigger.trigger.functionToCall}</td></tr>
+                                <tr><td className="cellTabTriggerInfos">{trigger.functionToCall}</td></tr>
 
                                 <tr><td className = "cellTabTriggerLabel">Interval</td></tr>
-                                <tr><td className="cellTabTriggerInfos">{trigger.trigger.interval}</td></tr>
+                                <tr><td className="cellTabTriggerInfos">{trigger.interval}</td></tr>
 
                                 <tr><td className="cellTabTriggerLabel">state</td></tr>
                                 <tr><td className = "cellTabTrigger"> {Running?"Running":"Paused"}</td></tr>
                                 
                                 <tr><td className = "cellTabTriggerLabel">Last tick Cost</td></tr>
-                                <tr><td className="cellTabTriggerInfos">{trigger.trigger.lastTick}</td></tr>                            
+                                <tr><td className="cellTabTriggerInfos">{trigger.lastTick}</td></tr>                            
                             </tbody>
                     </table>    
                     </Modal.Body>

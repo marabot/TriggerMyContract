@@ -1,6 +1,6 @@
 import TriggerCard from './TriggerCard.js';
 
-function TriggerCardList(triggers){
+function TriggerCardList({triggers, reload}){
     // console.log("Card List");
     // console.log(triggers);
 
@@ -14,6 +14,9 @@ function TriggerCardList(triggers){
         return <div>Loading</div>;
     }
    
+    const reload2 = async()=>{
+        reload();
+    }
 
     const triggersContainer={
         padding:"12px",
@@ -28,14 +31,15 @@ function TriggerCardList(triggers){
         <div style = {triggersContainer}>
            
            {
-           triggers.triggers.map((trigger,i)=>{
+           triggers.map((trigger,i)=>{
             
                 return ( 
                     
                     <div key={i}>
                         
                         <TriggerCard
-                            trigger = {trigger}                        
+                            trigger = {trigger} 
+                            reload={reload2}                       
                         ></TriggerCard>
                     
                     </div>)
