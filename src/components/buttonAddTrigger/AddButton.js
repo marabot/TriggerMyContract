@@ -62,12 +62,12 @@ function AddButton({userAddress, chainId}){
     return(            
        
         <div>
-            <Button id="buttonAdd" variant="primary" onClick={handleShow}> Add new Trigger </Button> 
+            <Button id="buttonAdd" variant="primary" onClick={handleShow}> Create new Trigger </Button> 
 
              <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
             
                     <Modal.Header closeButton>
-                            <Modal.Title>Modal heading</Modal.Title>
+                            <Modal.Title>Create new Trigger</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form>    

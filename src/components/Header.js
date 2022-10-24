@@ -127,7 +127,7 @@ function Header({
        if (tmcwalletAddr!=undefined){
         
        const balance = await web3.eth.getBalance(tmcwalletAddr);        
-           document.querySelector("#balanceTMC").textContent = web3.utils.fromWei(balance).toString().substring(0,10);       
+           document.querySelector("#balanceTMC").textContent =  web3.utils.fromWei(balance).toString().substring(0,10) + " ETH";       
        }
 
 
@@ -215,6 +215,7 @@ function Header({
         document.querySelector("#prepare").style.display = "block";
         document.querySelector("#connected").style.display = "none";
         document.querySelector("#selected-account").textContent = "";
+        document.querySelector("#balanceTMC").textContent = "";  
         setWeb3([]);
         setAccounts([]);
         SetUserAddr([]);
@@ -285,11 +286,11 @@ function Header({
   
   const styleAddr= {
     display:"flex",
-    alignItems:"center",
-      color:"white",   
-      fontSize:"20px",
-      borderColor:"black",
-      borderSize:"3",
+    color:"white",   
+    fontSize:"20px",
+    borderColor:"black",
+    borderSize:"3",
+    width:"300px"
   }
   
   
@@ -327,7 +328,8 @@ function Header({
 
  const wrongNetworkMess={
     fontSize:15,   
-    color:"white"
+    color:"white",
+    width:"150px"
  }
 
  const logoStyle= {
@@ -348,16 +350,15 @@ const connectLine1= {
   flexDirection:"row", 
   justifyContent:"flex-end",
   alignItems:"center",
-  paddingBottom:"15px"
+  paddingBottom:"8px"
   
 }
 
 const connectLine2= {
   display:"flex",
   flexDirection:"row", 
-  justifyContent:"space-around",
-  paddingBottom:"8px"
-  
+  justifyContent:"space-evenly",
+  height:"30px"  
 }
 
 const connectLine3= {
@@ -392,7 +393,7 @@ const connectLine3= {
               <div style={connectLine1}> 
                     <div style={styleAddr} id='selected-account'>  </div>
                     <div id="prepare">
-                       <button id="btn-connect" style={boutonMenu}> connect</button>
+                       <button id="btn-connect" style={boutonMenu}> &emsp; connect &emsp;</button>
                     </div>
                     <div id="connected" style={displayNone}>
                         <button id="btn-disconnect"  style={boutonMenu}> disconnect</button>       
@@ -400,7 +401,7 @@ const connectLine3= {
                </div>
 
               <div style={connectLine2}>
-                <div id="balanceTMC">Founds : 5€</div>
+                <div id="balanceTMC" style={styleAddr}> </div>
                 <div id="network-name" style={wrongNetworkMess}> - </div> 
               </div>
               <div style={connectLine3}>
