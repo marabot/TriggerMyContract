@@ -10,10 +10,13 @@ function TriggerCard({trigger, reload}){
     const [Running, setRunnning] = React.useState(trigger.inWork);  
     const [DetailsDisplay, setDetailsDisplay] = useState(false);
     const [show, setShow] = useState(false); 
+    const [showWarning, setShowWarning] = useState(false); 
 
     
     const handleClose = () => setShow(false); 
     const detailsClick = () => setShow(true);
+    const handleCloseWarning = () => setShowWarning(false); 
+    const deleteClick = () => setShowWarning(true);
     
     const OnOffButton = function (triggerId){
              
@@ -36,6 +39,9 @@ function TriggerCard({trigger, reload}){
         deleteTrigger(id);   
         reload();
     }
+
+    
+  
     
        
     const detailsLink = {
@@ -97,7 +103,7 @@ function TriggerCard({trigger, reload}){
                         <td className="cellTabTriggerInfos">{trigger.contractToCall}</td>   
                         <td className="cellTabTriggerCentered">{OnOffButton(trigger.id)}</td>     
                         <td className = "cellTabTrigger"> {stateColor(Running)}</td>
-                        <td colSpan="5"><button onClick={()=>deleteThisTrigger(trigger.id)}> Stop </button></td>    
+                        <td colSpan="5"><button onClick={()=>deleteClick()}> Delete </button></td>    
                      </tr>
                     
                 </tbody>
@@ -140,7 +146,26 @@ function TriggerCard({trigger, reload}){
                             Close
                         </Button>                      
                     </Modal.Footer>   
-                </Modal>                                    
+                </Modal>   
+
+                  <Modal show={showWarning} style={{opacity:1, margin:100}} animation={false} onHide={handleCloseWarning}>    
+
+                    <Modal.Header closeButton  style={modalStyle}>
+                            <Modal.Title>DETAILS</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body  style={modalStyle}>
+                    {trigger.label} will be deleted
+                    </Modal.Body>
+
+                    <Modal.Footer  style={modalStyle}>
+                        <Button variant="secondary" onClick={handleCloseWarning}>
+                            Cancel
+                        </Button>     
+                        <Button variant="secondary" onClick={()=>deleteThisTrigger(trigger.id)}>
+                            Confirm
+                        </Button>                     
+                    </Modal.Footer>   
+                </Modal>                                                             
          </div> 
     )
 }
