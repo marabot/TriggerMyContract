@@ -196,18 +196,19 @@ function Header({
         console.log("Killing the wallet connection", provider);
       
         // TODO: Which providers have close method?
-        if(provider.close) {
-          await provider.close();
-      
-          // If the cached provider is not cleared,
-          // WalletConnect will default to the existing session
-          // and does not allow to re-scan the QR code with a new wallet.
-          // Depending on your use case you may want or want not his behavir.
-          await web3Modal.clearCachedProvider();
-          provider = null;
-         
+        if (provider!=undefined && provider!=null){        
+          if(provider.close) {
+            await provider.close();
+        
+            // If the cached provider is not cleared,
+            // WalletConnect will default to the existing session
+            // and does not allow to re-scan the QR code with a new wallet.
+            // Depending on your use case you may want or want not his behavir.
+            await web3Modal.clearCachedProvider();
+            provider = null;
+          
+          }
         }
-      
 
         selectedAccount = null;
       
@@ -232,9 +233,6 @@ function Header({
     });
 
 
-  const depositTest =   ()=>{
-    alert("amount");
-  }
 
   const deposit =  async  (amount)=>{
   
@@ -250,7 +248,7 @@ function Header({
 
   const withdraw =  async  ()=>{
   
-    const TMCwalletIndex = await getTMCWalletIndex(UserAddr);
+  const TMCwalletIndex = await getTMCWalletIndex(UserAddr);
    
    
   //  provider =  new ethers.providers.JsonRpcProvider(process.env.REACT_APP_NODE_ENDPOINT); 
