@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 require('dotenv').config();
 
 
-function DepositButton({userWallet, deposit}){
+function DepositButton({userWallet, deposit, chainId}){
   
     const [UserAddr, setUserAddr] = useState('');
     const [DepositValue, setDepositValue] = useState(0);
@@ -48,7 +48,7 @@ function DepositButton({userWallet, deposit}){
        
       
            // alert(UserAddr);
-            if (userWallet.length===0) {
+            if (userWallet.length===0 || (chainId!==1 && chainId!==5)) {
                 
                 document.querySelector("#buttonDeposit").disabled = 1;
             }else
@@ -58,7 +58,7 @@ function DepositButton({userWallet, deposit}){
             }
        
         init();
-      },[userWallet]);   
+      },[userWallet, chainId]);   
       
 
     return(            

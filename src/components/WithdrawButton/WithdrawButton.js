@@ -5,14 +5,13 @@ import Modal from 'react-bootstrap/Modal';
 require('dotenv').config();
 
 
-function WithdrawButton({userWallet, withdraw}){
+function WithdrawButton({userWallet, withdraw, chainId}){
   
     const [UserAddr, setUserAddr] = useState('');
     const [show, setShow] = useState(false); 
     const handleClose = () => setShow(false); 
     const handleShow = () => setShow(true);    
        
-    const mnemonic=process.env.REACT_APP_MNEMONIC_MAIN;
     
     /*
     console.log("infos !!");
@@ -40,7 +39,7 @@ function WithdrawButton({userWallet, withdraw}){
           setUserAddr(userWallet);          
         } 
         
-        if (userWallet.length===0) {
+        if (userWallet.length===0 || (chainId!==1 && chainId!==5)) {
             document.querySelector("#buttonWithdraw").disabled = 1;
         }else
         {
@@ -49,7 +48,7 @@ function WithdrawButton({userWallet, withdraw}){
         
        
         init();
-      },[userWallet]);   
+      },[userWallet, chainId]);   
      
 
     return(            

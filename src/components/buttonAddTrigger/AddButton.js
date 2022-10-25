@@ -7,7 +7,7 @@ import {addToDB} from '../../utils/firebase.js';
 function AddButton({userAddress, chainId}){
   
   
-    const [ChainId, setChainId] = useState('');  
+   
     const [Label, setLabel] = useState('');
     const [ToContract, setToContract] = useState('');
     const [FunctionToCall, setFunctionToCall] =useState('');
@@ -21,7 +21,7 @@ function AddButton({userAddress, chainId}){
     
     const handleCloseAndSave = () => {    
         
-       addToDB(Label, userAddress, ChainId, ToContract, FunctionToCall, Timing );      
+       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, Timing );      
        setToContract('');
        setFunctionToCall('');
        setTiming('daily');
@@ -34,15 +34,16 @@ function AddButton({userAddress, chainId}){
     };
 
     useEffect(()=>{        
-          
-        if (userAddress===undefined) {
+         
+
+        if (userAddress===undefined || (chainId!==1 && chainId!==5)) {
             document.querySelector("#buttonAdd").disabled = 1;
         }else
         {
             document.querySelector("#buttonAdd").disabled = 0;
         }    
      
-      },[userAddress]);
+      },[userAddress,chainId]);
 
     const options = function(){   
        

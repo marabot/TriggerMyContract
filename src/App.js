@@ -20,7 +20,7 @@ function App() {
    
 
  
-  const butAddAndDepositDiv={
+  const butAddDiv={
     display:"flex",
     justifyContent:"space-around",
     padding:"30px",
@@ -74,7 +74,10 @@ function App() {
   useEffect(() => { 
     
    setUserTriggers(Triggers.filter(e => e.maker === account[0]).filter(e=>e.deleted === false));
-  }, [Triggers,account]);
+   console.log("apppp");
+   console.log(ChainId);
+
+  }, [Triggers,account, ChainId]);
 
 
   return (
@@ -84,15 +87,18 @@ function App() {
         setWeb3={setWeb3}
         setAccounts={setAccount}
         setChainId={setChainId}
+        ChainId={ChainId}
         
         />
+          
+        <div style={butAddDiv}>
         
-      <div style={butAddAndDepositDiv}>
-          <AddButton 
-            userAddress={account[0]}  
-            chainId={ChainId}    
-          ></AddButton>         
-      </div>
+            <AddButton 
+              userAddress={account[0]}  
+              chainId={ChainId}    
+            ></AddButton>         
+        </div>
+     
 
         {displayAllTriggers(UserTriggers)}
         

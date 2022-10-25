@@ -11,7 +11,7 @@ const ethers= require("ethers");
 require('dotenv').config();
 
 function Header({
-     setWeb3, setAccounts, setChainId
+     setWeb3, setAccounts, setChainId, ChainId
 }){    
     // Web3modal instance
     let web3Modal;
@@ -23,11 +23,12 @@ function Header({
     let selectedAccount;
 
     let web3={id:5};
-    let userAddreProp=1;
+  
   
     const [UserAddr, SetUserAddr]= useState([]);
     const [Web3Lib, setWeb3Lib]= useState([]);
-
+   
+    
     function init() {
 
      //   console.log("Initializing example");
@@ -79,7 +80,7 @@ function Header({
             console.log("No web3 instance injected, using Local web3.");
             setWeb3(web3);
             setWeb3Lib(web3);
-       }
+          }
       
       const accounts = await web3.eth.getAccounts();
       setAccounts(accounts);
@@ -87,6 +88,7 @@ function Header({
     
       // Get connected chain id from Ethereum node
       const chainId = await web3.eth.getChainId();
+
      // console.log("chainId");
       //console.log(chainId);
       setChainId(chainId);
@@ -104,7 +106,7 @@ function Header({
         document.querySelector("#network-name").textContent = "Goerli";
       }           
       else{
-        document.querySelector("#network-name").textContent = "unknowNetwork";
+        document.querySelector("#network-name").textContent = "network not supported";
       }
             
       /* const chainData =  EvmChains.getChain(chainId);
@@ -134,7 +136,7 @@ function Header({
         // Display fully loaded UI for wallet data
         document.querySelector("#prepare").style.display = "none";
         document.querySelector("#connected").style.display = "block";
-        userAddreProp={addr:accounts[0]};
+       
         SetUserAddr(accounts[0]);
       
        // console.log(accounts[0]);
@@ -218,6 +220,8 @@ function Header({
         document.querySelector("#selected-account").textContent = "";
         document.querySelector("#balanceTMC").textContent = "";  
         setWeb3([]);
+        const chainId = await web3.eth.getChainId();
+        setChainId('');
         setAccounts([]);
         SetUserAddr([]);
         
@@ -246,7 +250,7 @@ function Header({
    // console.log(tx); 
   }
 
-  const withdraw =  async  ()=>{
+  const withdraw =  async ()=>{
   
   const TMCwalletIndex = await getTMCWalletIndex(UserAddr);
    
@@ -327,7 +331,8 @@ function Header({
  const wrongNetworkMess={
     fontSize:15,   
     color:"white",
-    width:"150px"
+    width:"400px", 
+    textAlign:"center"
  }
 
  const logoStyle= {
@@ -374,19 +379,20 @@ const connectLine3= {
   */
 
    useEffect(()=>{
-  
+   
+
     },[UserAddr]);
 
 // TODO display founds
 
     return(    
         <div style={container}>               
-              <div style={styleTitreBack}>
-                 <img  style= {logoStyle} alt="" src={logo}></img>                     
-                                <div className="header-title" style={styleTitreBack}>
-                                        TriggerMyContract
-                                </div>
-              </div> 
+            <div style={styleTitreBack}>
+                <img  style= {logoStyle} alt="" src={logo}></img>                     
+                              <div className="header-title" style={styleTitreBack}>
+                                      TriggerMyContract
+                              </div>
+            </div> 
             <div style={connectContainer}>
               <div style={connectLine1}> 
                     <div style={styleAddr} id='selected-account'>  </div>
@@ -402,15 +408,17 @@ const connectLine3= {
                 <div id="balanceTMC" style={styleAddr}> </div>
                 <div id="network-name" style={wrongNetworkMess}> - </div> 
               </div>
-              <div style={connectLine3}>
+              <div id="buttons" style={connectLine3}>
                 <DepositButton
                       userWallet={UserAddr}
-                      deposit={deposit}>                      
+                      deposit={deposit}
+                      chainId={ChainId}>                      
                 </DepositButton>
 
                 <WithdrawButton
                       userWallet={UserAddr}
-                      withdraw={withdraw}>
+                      withdraw={withdraw}
+                      chainId={ChainId}>
                 </WithdrawButton>
               </div>             
            </div>
