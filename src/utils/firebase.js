@@ -41,7 +41,8 @@ export async function getAllTriggers() {
                             datas.interval,
                             datas.inWork,
                             datas.lastTick,
-                            datas.deleted
+                            datas.deleted, 
+                            datas.createTime
                             )
                 );   
             });    
@@ -176,7 +177,8 @@ export async function getTriggerByAddrFrom(address, web3){
                     datas.interval,
                     datas.inWork,
                     datas.lastTick,
-                    datas.deleted
+                    datas.deleted, 
+                    datas.createTime
                     )
         );   
     });    
@@ -212,7 +214,8 @@ export async function addToDB(label, userAddr, network, contractAddr, functionTo
         interval : interval, 
         inWork: false,
         lastTick : 0,
-        deleted : false
+        deleted : false, 
+        createTime : Date.now()
     });
     console.log("Document written with ID: ", docRef.id);
     } catch (e) {
