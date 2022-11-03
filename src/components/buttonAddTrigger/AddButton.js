@@ -11,16 +11,22 @@ function AddButton({userAddress, chainId}){
     const [Label, setLabel] = useState('');
     const [ToContract, setToContract] = useState('');
     const [FunctionToCall, setFunctionToCall] =useState('');
-    const [Timing, setTiming] = useState('daily');   
+    const [Timing, setTiming] = useState(0);   
     const [UserAddr, setUserAddr] = useState('');
+    const [ShowIntervalType, setShowintervalType] = useState('every');
 
     const [show, setShow] = useState(false); 
+    const [Days, setDays] = useState(0);
+    const [Hours, setHours] = useState(0);
+    const [Minutes, setMinutes] = useState(0);
+    
+    
     const handleClose = () => setShow(false); 
     
-        
+    
     
     const handleCloseAndSave = () => {    
-        
+    
        addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, Timing );      
        setToContract('');
        setFunctionToCall('');
@@ -28,43 +34,41 @@ function AddButton({userAddress, chainId}){
        setShow(false);
     };
 
-    const handleShow = () => {   
-       
+    const handleShow = () => {          
         setShow(true);          
     };
+  
+    const selectInterval={
+        width:"30px", 
+        borderColor:"#000000",
+        borderRadius:"1px",
+        backgroundColor:"#cccccc"
+     }
+
+     const interval={
+        display:"flex",    
+        width:"70%",
+        justifyContent:"space-around",
+     }
 
     useEffect(()=>{        
-         
-
+              
         if (userAddress===undefined || (chainId!==1 && chainId!==5)) {
             document.querySelector("#buttonAdd").disabled = 1;
         }else
         {
             document.querySelector("#buttonAdd").disabled = 0;
-        }    
+        }   
      
-      },[userAddress,chainId]);
-
-    const options = function(){   
+        setTiming(timing);
        
-        return (
-            <select name="timing" onChange={e=>setTiming(e.target.value)}>  
-                <option value="every minute">every minute</option>
-                <option value="hourly">hourly</option>
-                <option value="daily">daily</option>
-                <option value="weekly">weekly</option>
-                <option value="monthly">monthly</option>    
-            </select>
-        )
-    };
-
-
-
+      },[userAddress, chainId, Days, Hours, Minutes]);
+    
     return(            
        
         <div>
             <Button id="buttonAdd" variant="primary" onClick={handleShow}> Create new Trigger </Button> 
-
+           
              <Modal show={show} style={{opacity:1}} animation={false} onHide={handleClose}>    
             
                     <Modal.Header closeButton>
@@ -78,8 +82,14 @@ function AddButton({userAddress, chainId}){
                         <input value={ToContract} type="text" name="to" onChange={e=>setToContract(e.target.value)}/><br/>
                         <label>function to call</label><br/>
                         <input value={FunctionToCall} type="text" name="function" onChange={e=>setFunctionToCall(e.target.value)}/><br/>
-                        <label>function to call</label><br/>
-                        {options()}
+                        <label>Interval</label><br/>    
+                        <div>        
+                            <div  id ="interval" style={interval}>
+                                <div > Days : <input style={selectInterval} type="text" value={Days} name="d" id="days" onChange={e=>setDays(e.target.value)}/> </div> +
+                                <div > Hours : <input style={selectInterval} type="text" value={Hours} name="h" id="hours" onChange={e=>setHours(e.target.value)}/> </div> +
+                                <div > Minutes : <input style={selectInterval} type="text" value={Minutes} name="m" id="minutes" onChange={e=>setMinutes(e.target.value)}/> </div>
+                            </div>
+                        </div>                        
                         </form>
                     </Modal.Body>
 
