@@ -203,7 +203,7 @@ export async function deleteTrigger(id){
    return result;
 }
 
-export async function addToDB(label, userAddr, network, contractAddr, functionToCall, interval){
+export async function addToDB(label, userAddr, network, contractAddr, functionToCall, interval, lastTick){
     try {
     const docRef = await addDoc(collection(db, "triggers"), {
         label:label,
@@ -215,7 +215,7 @@ export async function addToDB(label, userAddr, network, contractAddr, functionTo
         inWork: false,
         lastTick : 0,
         deleted : false, 
-        createTime : Date.now()
+        createTime : lastTick
     });
     console.log("Document written with ID: ", docRef.id);
     } catch (e) {

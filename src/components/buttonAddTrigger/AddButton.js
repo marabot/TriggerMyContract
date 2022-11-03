@@ -2,32 +2,38 @@ import React, { useEffect,useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {addToDB} from '../../utils/firebase.js';
-
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import { Timestamp } from 'firebase/firestore';
 
 function AddButton({userAddress, chainId}){
-  
-  
+    
    
     const [Label, setLabel] = useState('');
     const [ToContract, setToContract] = useState('');
     const [FunctionToCall, setFunctionToCall] =useState('');
     const [Timing, setTiming] = useState(0);   
     const [UserAddr, setUserAddr] = useState('');
-    const [ShowIntervalType, setShowintervalType] = useState('every');
-
+    const [IsIntervalEvery, SetIsIntervalEvery] = useState();
+    const [startDate, setStartDate] = useState(new Date());
     const [show, setShow] = useState(false); 
     const [Days, setDays] = useState(0);
     const [Hours, setHours] = useState(0);
     const [Minutes, setMinutes] = useState(0);
     
     
-    const handleClose = () => setShow(false); 
-    
-    
+    const handleClose = () => setShow(false);        
     
     const handleCloseAndSave = () => {    
-    
-       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, Timing );      
+        let lastTick;
+        if (IsIntervalEvery)
+        {
+            lastTick=0;
+        } else {           
+            lastTick = Timestamp.fromDate(startDate).seconds - Timing;          
+        }
+       
+       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, Timing, lastTick );      
        setToContract('');
        setFunctionToCall('');
        setTiming('daily');
@@ -37,6 +43,19 @@ function AddButton({userAddress, chainId}){
     const handleShow = () => {          
         setShow(true);          
     };
+
+    const datepicker= () => {
+        
+        return (
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            timeInputLabel="Time:"
+            dateFormat="MM/dd/yyyy h:mm aa"
+            showTimeInput
+          />
+        );
+      };
   
     const selectInterval={
         width:"30px", 
@@ -52,17 +71,42 @@ function AddButton({userAddress, chainId}){
      }
 
     useEffect(()=>{        
-              
+         
+       
         if (userAddress===undefined || (chainId!==1 && chainId!==5)) {
             document.querySelector("#buttonAdd").disabled = 1;
         }else
         {
             document.querySelector("#buttonAdd").disabled = 0;
         }   
+
      
+        const radioStartNow = document.querySelector("#startNow");
+        const radioStartat = document.querySelector("#startAt");
+        const datePicker = document.querySelector("#datepicker");
+
+        if (radioStartNow && radioStartat)
+        {
+            if (!radioStartNow.checked && !radioStartat.checked) radioStartNow.checked = 1;
+
+
+            if (IsIntervalEvery){
+               radioStartNow.checked = 1;
+               radioStartat.checked = 0;
+               datePicker.style.display = "none";
+            }else
+            {
+               radioStartNow.checked = 0;
+               radioStartat.checked = 1;
+               datePicker.style.display = "block";
+            }
+        }
+        
+
+        const timing= parseInt(Days)*3600*24 +  parseInt(Hours)*3600 + parseInt(Minutes)*60;
         setTiming(timing);
        
-      },[userAddress, chainId, Days, Hours, Minutes]);
+      },[userAddress, chainId, Days, Hours, Minutes, IsIntervalEvery]);
     
     return(            
        
@@ -89,7 +133,12 @@ function AddButton({userAddress, chainId}){
                                 <div > Hours : <input style={selectInterval} type="text" value={Hours} name="h" id="hours" onChange={e=>setHours(e.target.value)}/> </div> +
                                 <div > Minutes : <input style={selectInterval} type="text" value={Minutes} name="m" id="minutes" onChange={e=>setMinutes(e.target.value)}/> </div>
                             </div>
-                        </div>                        
+                        </div>     
+                        <div id="start">
+                            <div><input name="now" type="radio" label="now" value ="now" id="startNow" onChange={()=>SetIsIntervalEvery(true)}/> Now </div>    
+                            <div><input name="at" type="radio" label="at" value ="now" id="startAt" onChange={()=>SetIsIntervalEvery(false)}/> At a time</div>
+                            <div id ="datepicker">{datepicker()}  </div>
+                        </div>                   
                         </form>
                     </Modal.Body>
 
@@ -101,7 +150,8 @@ function AddButton({userAddress, chainId}){
                             Save Changes
                         </Button>
                     </Modal.Footer>   
-              </Modal>       
+              </Modal>   
+            
         </div>            
     );
 }
