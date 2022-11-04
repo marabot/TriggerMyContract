@@ -7,6 +7,8 @@ class Trigger {
         chain, 
         contractToCall,
         functionToCall,
+        paramsValues, 
+        paramsTypes,
         interval,
         inWork,
         lastTick,
@@ -20,6 +22,8 @@ class Trigger {
         this.chain = chain;
         this.contractToCall = contractToCall;
         this.functionToCall = functionToCall;
+        this.paramsValues = paramsValues;
+        this.paramsTypes = paramsTypes;
         this.interval = interval;
         this.inWork = inWork;
         this.lastTick = lastTick;

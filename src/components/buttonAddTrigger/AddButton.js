@@ -23,11 +23,11 @@ function AddButton({userAddress, chainId}){
     const [IsLoaded, setIsLoaded] = useState(false);
 
     const [ParamType1, setParamType1] = useState('none');
-    const [ParamValue1, setParaValue1]= useState('');
+    const [ParamValue1, setParamValue1]= useState('');
     const [ParamType2, setParamType2] = useState('none');
-    const [ParamValue2, setParaValue2]= useState('');
+    const [ParamValue2, setParamValue2]= useState('');
     const [ParamType3, setParamType3] = useState('none');
-    const [ParamValue3, setParaValue3]= useState('');
+    const [ParamValue3, setParamValue3]= useState('');
     
     const handleClose = () => setShow(false);        
     
@@ -35,28 +35,38 @@ function AddButton({userAddress, chainId}){
         let lastTick;
         lastTick = IsIntervalEvery?0:Timestamp.fromDate(startDate).seconds - Timing;       
 
-        const params='';
+        let paramsValues='';
+        let paramsTypes='';
+
         if (ParamType1==='none'){
-            params=';;';
+            paramsValues=';;';
+            paramsTypes=';;';
         }else if (ParamType2==='none'){
-            params = ParamValue1 + ';;';
+            paramsValues = ParamValue1 + ';;';
+            paramsTypes = ParamType1 + ';;';
         }else if (ParamType3==='none'){
-            params = ParamValue1+ ';' + ParamValue2 + ';';
+            paramsValues = ParamValue1+ ';' + ParamValue2 + ';';
+            paramsTypes = ParamType1 + ';'+ ParamType2  +';';
         }else{
-            params = ParamValue1+ ';' + ParamValue2 + ';'+ ParamValue3;
+            paramsValues = ParamValue1+ ';' + ParamValue2 + ';' + ParamValue3;
+            paramsTypes = ParamType1 + ';'+ ParamType2  +';' + ParamType3;
         }        
        
-       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, Timing, lastTick );      
+        console.log("params");
+        console.log(ParamValue1);
+        console.log(ParamValue2);
+        console.log(ParamValue3);
+        console.log(paramsValues);
+        console.log(paramsTypes);
+       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, paramsValues, paramsTypes, Timing, lastTick );      
        setToContract('');
        setFunctionToCall('');
        setTiming('daily');
        setShow(false);
     };
 
-    const handleShow = () => {    
-        
-        setShow(true);     
-       
+    const handleShow = () => {            
+        setShow(true);            
     };
 
     const datepicker= () => {
@@ -203,15 +213,14 @@ function AddButton({userAddress, chainId}){
                                 
                                 </div>
                                 <div >
-                                <input value={Label} type="text" name="to" onChange={e=>setParaValue1(e.target.value)} style ={parameterValue}/><br/>
+                                <input value={ParamValue1} type="text" name="to" onChange={e=>setParamValue1(e.target.value)} style ={parameterValue}/><br/>
                                 </div>
                                 
                             </div>
                         </div>
                         <div id="param2">
                             <div>Parameter 2</div>
-                            <div style ={parameter} >
-                            
+                            <div style ={parameter} >                            
                                 <div>
                                     <Form.Select aria-label="Default select example" size ="sm" id="selectType2" onChange={e=>setParamType2(e.target.value)}>
                                         <option value="none">None</option>
@@ -222,7 +231,7 @@ function AddButton({userAddress, chainId}){
                                 
                                 </div>
                                 <div >
-                                <input value={Label} type="text" name="to" onChange={e=>setParaValue2(e.target.value)} style ={parameterValue}/><br/>
+                                <input value={ParamValue2} type="text" name="to" onChange={e=>setParamValue2(e.target.value)} style ={parameterValue}/><br/>
                                 </div>
                                 
                             </div> 
@@ -239,7 +248,7 @@ function AddButton({userAddress, chainId}){
                                 
                                 </div>
                                 <div >
-                                <input value={Label} type="text" name="to" onChange={e=>setParaValue3(e.target.value)} style ={parameterValue}/><br/>
+                                <input value={ParamValue3} type="text" name="to" onChange={e=>setParamValue3(e.target.value)} style ={parameterValue}/><br/>
                                 </div>
                                 
                             </div>

@@ -38,6 +38,8 @@ export async function getAllTriggers() {
                             datas.chain,
                             datas.contractToCall,
                             datas.functionToCall,
+                            datas.paramValues,
+                            datas.paramTypes,
                             datas.interval,
                             datas.inWork,
                             datas.lastTick,
@@ -174,6 +176,8 @@ export async function getTriggerByAddrFrom(address, web3){
                     datas.chain,
                     datas.contractToCall,
                     datas.functionToCall,
+                    datas.paramValues,
+                    datas.paramTypes,
                     datas.interval,
                     datas.inWork,
                     datas.lastTick,
@@ -203,7 +207,7 @@ export async function deleteTrigger(id){
    return result;
 }
 
-export async function addToDB(label, userAddr, network, contractAddr, functionToCall, interval, lastTick){
+export async function addToDB(label, userAddr, network, contractAddr, functionToCall, paramsValues, paramTypes, interval, lastTick){
     try {
     const docRef = await addDoc(collection(db, "triggers"), {
         label:label,
@@ -211,6 +215,8 @@ export async function addToDB(label, userAddr, network, contractAddr, functionTo
         chain : network,
         contractToCall : contractAddr,
         functionToCall :functionToCall,
+        paramValues: paramsValues,
+        paramTypes : paramTypes,
         interval : interval, 
         inWork: false,
         lastTick : 0,
