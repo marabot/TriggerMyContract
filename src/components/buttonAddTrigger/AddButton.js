@@ -14,6 +14,7 @@ function AddButton({userAddress, chainId}){
     const [Timing, setTiming] = useState(0);   
     const [UserAddr, setUserAddr] = useState('');
     const [IsIntervalEvery, SetIsIntervalEvery] = useState();
+    const [IsStartNow, SetIsStartNow] = useState(true);
     const [startDate, setStartDate] = useState(new Date());
     const [Show, setShow] = useState(false); 
     const [Days, setDays] = useState(0);
@@ -33,8 +34,8 @@ function AddButton({userAddress, chainId}){
     
     const handleCloseAndSave = () => {    
         let lastTick;
-        lastTick = IsIntervalEvery?0:Timestamp.fromDate(startDate).seconds - Timing;       
-
+        lastTick = IsStartNow?0:Timestamp.fromDate(startDate).seconds - Timing;       
+        let paramNames =[];
         let paramsValues='';
         let paramsTypes='';
 
@@ -58,7 +59,7 @@ function AddButton({userAddress, chainId}){
         console.log(ParamValue3);
         console.log(paramsValues);
         console.log(paramsTypes);
-       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, paramsValues, paramsTypes, Timing, lastTick );      
+       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, paramsValues, paramsTypes, paramNames, Timing, lastTick );      
        setToContract('');
        setFunctionToCall('');
        setTiming('daily');
@@ -114,6 +115,25 @@ function AddButton({userAddress, chainId}){
         divParam3.style.display = 'none';
       }
 
+
+      const selectStartChange = (e)=>{
+        const radioStartNow = document.querySelector("#startNow");
+        const radioStartat = document.querySelector("#startAt");
+        console.log(e.target.value);
+        if (e.target.value==="true"){
+            radioStartNow.checked = 1;
+            radioStartat.checked = 0;
+            SetIsStartNow(true);
+        }else
+        {
+            radioStartNow.checked = 0;
+            radioStartat.checked = 1;
+            SetIsStartNow(false);
+        }        
+      };
+
+
+
     useEffect(()=>{      
         setParamType1('none');
     },[]);
@@ -161,7 +181,7 @@ function AddButton({userAddress, chainId}){
         {
             if (!radioStartNow.checked && !radioStartat.checked) radioStartNow.checked = 1;
 
-
+/*
             if (IsIntervalEvery){
                radioStartNow.checked = 1;
                radioStartat.checked = 0;
@@ -171,7 +191,7 @@ function AddButton({userAddress, chainId}){
                radioStartNow.checked = 0;
                radioStartat.checked = 1;
                datePicker.style.display = "flex";
-            }
+            }*/
         }
         
 
@@ -256,9 +276,9 @@ function AddButton({userAddress, chainId}){
                         <label>Interval</label><br/> 
                         
                         <div id="start">
-                            <div><input name="now" type="radio"  id="startNow" onChange={()=>SetIsIntervalEvery(true)}/> Now 
+                            
                             <div>        
-                            <div  id ="interval" style={interval}>
+                            <div id ="interval" style={interval}>
                                 <div > Days : <input style={selectInterval} type="text" value={Days} name="d" id="days" onChange={e=>setDays(e.target.value)}/> </div> +
                                 <div > Hours : <input style={selectInterval} type="text" value={Hours} name="h" id="hours" onChange={e=>setHours(e.target.value)}/> </div> +
                                 <div > Minutes : <input style={selectInterval} type="text" value={Minutes} name="m" id="minutes" onChange={e=>setMinutes(e.target.value)}/> </div>
@@ -266,7 +286,8 @@ function AddButton({userAddress, chainId}){
                         </div>     
                             
                             </div>    
-                            <div><input name="at" type="radio"  id="startAt" onChange={()=>SetIsIntervalEvery(false)}/> At a time</div>
+                            <div><input name="now" type="radio"  id="startNow" value={true} onClick={(e)=>selectStartChange(e)}/> Now 
+                            <div><input name="at" type="radio"  id="startAt" value={false} onClick={(e)=>selectStartChange(e)} /> At a time</div>
                             <div id ="datepicker">{datepicker()}  </div>
                         </div>                   
                         </form>

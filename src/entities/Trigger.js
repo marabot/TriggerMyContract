@@ -9,6 +9,7 @@ class Trigger {
         functionToCall,
         paramsValues, 
         paramsTypes,
+        paramNames,
         interval,
         inWork,
         lastTick,
@@ -24,6 +25,7 @@ class Trigger {
         this.functionToCall = functionToCall;
         this.paramsValues = paramsValues;
         this.paramsTypes = paramsTypes;
+        this.paramNames= paramNames;
         this.interval = interval;
         this.inWork = inWork;
         this.lastTick = lastTick;
