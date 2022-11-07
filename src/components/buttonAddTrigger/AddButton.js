@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { Timestamp } from 'firebase/firestore';
 
+
 function AddButton({userAddress, chainId}){
     
    
@@ -13,8 +14,8 @@ function AddButton({userAddress, chainId}){
     const [FunctionToCall, setFunctionToCall] =useState('');
     const [Timing, setTiming] = useState(0);   
     const [UserAddr, setUserAddr] = useState('');
-    const [IsIntervalEvery, SetIsIntervalEvery] = useState();
-    const [IsStartNow, SetIsStartNow] = useState(true);
+    const [IsIntervalEvery, setIsIntervalEvery] = useState();
+    const [IsStartNow, setIsStartNow] = useState(true);
     const [startDate, setStartDate] = useState(new Date());
     const [Show, setShow] = useState(false); 
     const [Days, setDays] = useState(0);
@@ -28,16 +29,36 @@ function AddButton({userAddress, chainId}){
     const [ParamType2, setParamType2] = useState('none');
     const [ParamValue2, setParamValue2]= useState('');
     const [ParamType3, setParamType3] = useState('none');
-    const [ParamValue3, setParamValue3]= useState('');
+    const [ParamValue3, setParamValue3]= useState('');    
     
-    const handleClose = () => setShow(false);        
+
+    const handleClose = () => {
+        setHours(0);
+        setDays(0);
+        setMinutes(0);   
+        
+        setLabel("");
+        setToContract('');
+        setFunctionToCall('');       
+        setIsStartNow(true);
+        setShow(false);       
+    } 
     
     const handleCloseAndSave = () => {    
         let lastTick;
-        lastTick = IsStartNow?0:Timestamp.fromDate(startDate).seconds - Timing;       
-        let paramNames =[];
+        lastTick = IsStartNow?0:Timestamp.fromDate(startDate).seconds - Timing;      
         let paramsValues='';
         let paramsTypes='';
+
+        if(Timing ===0){
+           alert("Choose an interval");
+           return;            
+        }
+
+        if (Label==="" || ToContract==="" || FunctionToCall==""){
+            alert("'Name', 'Contract to call' and 'Function to call' are required");
+            return;
+        }
 
         if (ParamType1==='none'){
             paramsValues=';;';
@@ -59,10 +80,16 @@ function AddButton({userAddress, chainId}){
         console.log(ParamValue3);
         console.log(paramsValues);
         console.log(paramsTypes);
-       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, paramsValues, paramsTypes, paramNames, Timing, lastTick );      
+       addToDB(Label, userAddress, chainId, ToContract, FunctionToCall, paramsValues, paramsTypes,  Timing, lastTick );      
+
+       setHours(0);
+       setDays(0);
+       setMinutes(0);
+       
+       setLabel("");
        setToContract('');
-       setFunctionToCall('');
-       setTiming('daily');
+       setFunctionToCall('');       
+       setIsStartNow(true);
        setShow(false);
     };
 
@@ -87,7 +114,8 @@ function AddButton({userAddress, chainId}){
         width:"30px", 
         borderColor:"#000000",
         borderRadius:"1px",
-        backgroundColor:"#cccccc"
+        backgroundColor:"#cccccc",
+        textAlign:"center"
      }
 
      const interval={
@@ -123,16 +151,15 @@ function AddButton({userAddress, chainId}){
         if (e.target.value==="true"){
             radioStartNow.checked = 1;
             radioStartat.checked = 0;
-            SetIsStartNow(true);
+            setIsStartNow(true);
         }else
         {
             radioStartNow.checked = 0;
             radioStartat.checked = 1;
-            SetIsStartNow(false);
+            setIsStartNow(false);
         }        
       };
-
-
+    
 
     useEffect(()=>{      
         setParamType1('none');
@@ -198,12 +225,10 @@ function AddButton({userAddress, chainId}){
         const timing= parseInt(Days)*3600*24 +  parseInt(Hours)*3600 + parseInt(Minutes)*60;
         setTiming(timing);
        
-      },[userAddress, chainId, Days, Hours, Minutes, IsIntervalEvery, ParamType1, ParamType2, ParamType3, Show]);
-    
+      },[userAddress, chainId, Days, Hours, Minutes, IsIntervalEvery, ParamType1, ParamType2, ParamType3, Show]);    
 
 
-    return(            
-       
+    return(           
         <div>
             <Button id="buttonAdd" variant="primary" onClick={handleShow}> Create new Trigger </Button> 
            
@@ -215,11 +240,11 @@ function AddButton({userAddress, chainId}){
                     <Modal.Body>
                         <form>    
                         <label>Name</label><br/>
-                        <input value={Label} type="text" name="to" onChange={e=>setLabel(e.target.value)} style ={parameterValue}/><br/>
-                        <label>to</label><br/>
-                        <input value={ToContract} type="text" name="to" onChange={e=>setToContract(e.target.value)} style ={parameterValue}/><br/>
-                        <label>function to call</label><br/>
-                        <input value={FunctionToCall} type="text" name="function" onChange={e=>setFunctionToCall(e.target.value)} style ={parameterValue}/><br/><br/>
+                        <input value={Label} type="text" name="to" onChange={e=>setLabel(e.target.value)} style ={parameterValue} maxlength="60"/><br/>
+                        <label>Contract to call</label><br/>
+                        <input value={ToContract} type="text" name="to" onChange={e=>setToContract(e.target.value)}  maxlength="42" style ={parameterValue}/><br/>
+                        <label>Function to call</label><br/>
+                        <input value={FunctionToCall} type="text" name="function" onChange={e=>setFunctionToCall(e.target.value)} maxlength="60" style ={parameterValue}/><br/><br/>
                         
                         <div>Parameter 1
                             <div style ={parameter}>

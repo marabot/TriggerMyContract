@@ -24,15 +24,15 @@
     text-align: center;
     color:rgb(42, 27, 126);
     font-size: 20px;
-    padding:15px;
+    
     
   }
   
   .cellTabTriggerLabel{  
     font-size: 15px;  
     color:black;
-    font-size: 20px;
-    padding:10px;
+    font-size: 15px;
+    padding:8px;
     text-align: center;
   }
 
@@ -45,8 +45,6 @@
 
   }
 
-  .cellTabTrigger{
-     
+  .cellTabTrigger{     
     text-align: center;
-
   }
