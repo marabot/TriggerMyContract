@@ -1,23 +1,23 @@
-import { findByLabelText } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import '../../custom.css';
-import {switchTriggerState, deleteTrigger} from '../../utils/firebase.js';
+import {switchTriggerState, deleteTrigger, getResultCallByTrigger} from '../../utils/firebase.js';
 
 function TriggerCard({trigger, reload}){
 
     const [Running, setRunnning] = React.useState(trigger.inWork);  
-    const [DetailsDisplay, setDetailsDisplay] = useState(false);
-    const [show, setShow] = useState(false); 
-    const [showWarning, setShowWarning] = useState(false); 
+    const [Show, setShow] = useState(false); 
+    const [ShowWarning, setShowWarning] = useState(false); 
+    const [ShowHistory, setShowHistory] = useState(false);
+    const [CallHistory, setCallHistory] = useState([]);
 
-    
     const handleClose = () => setShow(false); 
+    const handleCloseHistory = () => setShowHistory(false);
     const detailsClick = () => setShow(true);
+    const HistoryClick = () => setShowHistory(true);
     const handleCloseWarning = () => setShowWarning(false); 
-    const deleteClick = () => setShowWarning(true);
-    
+    const deleteClick = () => setShowWarning(true);   
     const OnOffButton = function (triggerId){
              
         if (Running===true){
@@ -44,7 +44,7 @@ function TriggerCard({trigger, reload}){
     const detailsLink = {       
         color:"blue",
         fontSize: "15px", 
-        height:"27px",
+        height:"29px",
         textAlign:"center",
     }
 
@@ -54,7 +54,7 @@ function TriggerCard({trigger, reload}){
     }
 
     const buttonDelete={
-        fontSize:"15px",
+        fontSize:"13px",
     }
 
     const modalStyle={
@@ -62,10 +62,18 @@ function TriggerCard({trigger, reload}){
         width:"600px"
     }
     
+    const modalStyleResults={
+        backgroundColor: "rgb(236, 236, 236)", 
+        width:"1000px"
+    }
+
     const main = {
         width:"1200px"
     }
 
+    const result = {
+        fontSize:"13px"
+    }
     const stateColor=(running)=>{
         if (running){
             return(
@@ -81,11 +89,14 @@ function TriggerCard({trigger, reload}){
 
     useEffect(()=>{
         const init = async()=>{
-        setRunnning(trigger.inWork);    
+        const callsHistory = await getResultCallByTrigger(trigger.id);
+        setCallHistory(callsHistory);
+        setRunnning(trigger.inWork);   
+       
         } 
 
         init();
-
+       
     },[trigger]);
 
     return(    
@@ -98,10 +109,10 @@ function TriggerCard({trigger, reload}){
                         <td width="45%" className="cellTabTriggerLabel">contract called</td>
                         <td width="10%"></td>
                         <td width ="10%" className="cellTabTriggerLabel">state</td>
-                        <td width="10%" rowspan="2" >
-                            <div style={detailsLink}><button style={buttonDelete} onClick={()=>deleteClick()}> Delete </button></div>
+                        <td width="10%" rowspan="2">                            
                             <div style={detailsLink} onClick={detailsClick}>Details...</div>
-                            <div style={detailsLink} onClick={detailsClick}>History...</div>                               
+                            <div style={detailsLink} onClick={HistoryClick}>History...</div>    
+                            <div style={detailsLink}><button style={buttonDelete} onClick={()=>deleteClick()}> Delete </button></div>                           
                         </td>
                      </tr>
                      <tr>
@@ -115,7 +126,7 @@ function TriggerCard({trigger, reload}){
                 </tbody>
             </table>    
 
-            <Modal show={show} style={{opacity:1, margin:100}} animation={false} onHide={handleClose}>    
+            <Modal show={Show} style={{opacity:1, margin:50}} animation={false} onHide={handleClose} centered>    
 
                     <Modal.Header closeButton  style={modalStyle}>
                             <Modal.Title>DETAILS</Modal.Title>
@@ -123,6 +134,8 @@ function TriggerCard({trigger, reload}){
                     <Modal.Body  style={modalStyle}>
                     <table className="TabTrigger">
                             <tbody>
+
+                               
                                 <tr><td className = "cellTabTriggerLabel" >Name</td></tr>
                                 <tr><td className = "cellTabTriggerInfos" >{trigger.label}</td></tr>
 
@@ -152,7 +165,41 @@ function TriggerCard({trigger, reload}){
                             Close
                         </Button>                      
                     </Modal.Footer>   
-                </Modal>          
+                </Modal> 
+
+                
+                 <Modal show={ShowHistory} style={{opacity:1, margin:"auto"}} animation={false} onHide={handleCloseHistory} centered>    
+
+                    <Modal.Header closeButton  style={modalStyleResults}>
+                            <Modal.Title>DETAILS</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body  style={modalStyleResults}>
+                    <table className="TabTrigger">        
+                            
+                            <tbody>
+                              
+                                {CallHistory.map((c)=>{
+                                    return (
+                                            <tr style={result}>
+                                                <td>time :  {c.time}</td>                                            
+                                                <td>txHash : {c.txHash}</td>
+                                                <td>fees :  {c.fees}</td>
+                                                <td>gasUsed : {c.gasUsed}</td>
+                                                <td>status : {c.status}</td>
+                                            </tr>                                        
+                                         )
+                                })}
+                            </tbody>
+                    </table> 
+                    </Modal.Body>
+
+                    <Modal.Footer  style={modalStyleResults}>
+                        <Button variant="secondary" onClick={handleCloseHistory}>
+                            Close
+                        </Button>                      
+                    </Modal.Footer>   
+                </Modal>   
+                          
          </div> 
     )
 }

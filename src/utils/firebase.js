@@ -4,6 +4,7 @@ require('dotenv').config();
 
 const ethers= require("ethers");
 
+const Call = require("../entities/Call");
 const Trigger = require("../entities/Trigger");
 
 const firebaseConfig = {
@@ -50,7 +51,6 @@ export async function getAllTriggers() {
             });    
     }catch(e){
       console.log("pas de trigers en BD");
-
     }
     
     return tabReturn;
@@ -83,29 +83,7 @@ export async function TryRegisterUser(userAddr){
        
     }catch(e){
         console.log(e);
-
     }
-
-   
-
-/*
-    try {
-        const docRef = await addDoc(collection(db, "accounts", userAddr), {
-            AddressUser: userAddr,
-            AddressWallet : userWallet
-        });
- /// TODO  recuperer valeur de nextWalletNumber pour l'incrémenter
-        docRef = doc(db, "walletCount", "jWOjs0DoolfRfgYhJxNF");
-        let newValue= 999;
-        const result = await updateDoc(docRef, {
-            nextWalletNumber : newValue
-        });
-        console.log("Document written with ID: ", docRef.id);
-        } catch (e) {
-        console.error("Error adding document: ", e);
-        }
-*/
-      
 };
 
 export async function getTMCWalletIndex(userAddress){
@@ -185,6 +163,49 @@ export async function getTriggerByAddrFrom(address, web3){
                     datas.createTime
                     )
         );   
+    });    
+    return tabReturn;
+}
+
+export async function getResultCallByTrigger(triggerId){
+    const results = [];
+
+    const calls = await getCallByTrigger(triggerId);    
+    
+    calls.map(async (c)=>{
+        
+        const docRef =  doc(db, "callResults", c.callId);
+        const docSnap = await getDoc(docRef);
+        if(docSnap.exists()){
+            results.push(c)            
+        }       
+    });
+
+    return results;
+}
+
+
+export async function getCallByTrigger(triggerId){
+    const tabReturn = [];
+    const docs = await getDocs(collection(db, "calls"));    
+
+    docs.forEach((doc) => {
+        const datas= doc.data();     
+      
+        if (datas.triggerId === triggerId){
+            tabReturn.push(
+                new Call(                        
+                        datas.time,
+                        datas.triggerId,
+                        datas.txHash,
+                        doc.id,
+                        0,
+                        0,
+                        0
+                        )
+            );   
+        }
+       
     });    
     return tabReturn;
 }
