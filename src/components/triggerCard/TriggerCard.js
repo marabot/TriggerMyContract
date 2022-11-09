@@ -192,7 +192,7 @@ function TriggerCard({trigger, reload}){
                                                 <td><TimestampToString timestamp = {c.time}/></td>                                            
                                                 <td>| txHash  {c.txHash}</td>
                                                 <td>| fees :  {c.fees} ETH</td>
-                                                <td>| gas used : {c.gasUsed} GWEI</td>
+                                                <td>| gas used : {c.gasUsed}</td>
                                                 <td>| status : {c.status?"success":"reverted"}</td>                                                
                                             </tr>                                        
                                          )
