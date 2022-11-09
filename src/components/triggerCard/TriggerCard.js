@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import '../../custom.css';
+import TimestampToString from '../Misc/TimestampToString.js';
+
 import {switchTriggerState, deleteTrigger, getResultCallByTrigger} from '../../utils/firebase.js';
 
 function TriggerCard({trigger, reload}){
@@ -58,21 +60,29 @@ function TriggerCard({trigger, reload}){
     }
 
     const modalStyle={
-        backgroundColor: "rgb(236, 236, 236)", 
-        width:"600px"
+        width:"1600px",    
+      
     }
     
-    const modalStyleResults={
+    const modalSectionStyle={
         backgroundColor: "rgb(236, 236, 236)", 
-        width:"1000px"
+        width:"1000px",
+        marginTop: '0px !important',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     }
 
+
     const main = {
-        width:"1200px"
+        width:"1200px",
+        marginTop: '0px !important',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     }
 
     const result = {
-        fontSize:"13px"
+        fontSize:"13px",
+        borderTop:"1px solid black"
     }
     const stateColor=(running)=>{
         if (running){
@@ -90,6 +100,8 @@ function TriggerCard({trigger, reload}){
     useEffect(()=>{
         const init = async()=>{
         const callsHistory = await getResultCallByTrigger(trigger.id);
+        
+       
         setCallHistory(callsHistory);
         setRunnning(trigger.inWork);   
        
@@ -109,7 +121,7 @@ function TriggerCard({trigger, reload}){
                         <td width="45%" className="cellTabTriggerLabel">contract called</td>
                         <td width="10%"></td>
                         <td width ="10%" className="cellTabTriggerLabel">state</td>
-                        <td width="10%" rowspan="2">                            
+                        <td width="10%" rowSpan="2">                            
                             <div style={detailsLink} onClick={detailsClick}>Details...</div>
                             <div style={detailsLink} onClick={HistoryClick}>History...</div>    
                             <div style={detailsLink}><button style={buttonDelete} onClick={()=>deleteClick()}> Delete </button></div>                           
@@ -125,17 +137,15 @@ function TriggerCard({trigger, reload}){
                     
                 </tbody>
             </table>    
+      
+            <Modal show={Show}  style={modalStyle} animation={true} onHide={handleClose} centered>    
 
-            <Modal show={Show} style={{opacity:1, margin:50}} animation={false} onHide={handleClose} centered>    
-
-                    <Modal.Header closeButton  style={modalStyle}>
+                    <Modal.Header closeButton  style={modalSectionStyle} >
                             <Modal.Title>DETAILS</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body  style={modalStyle}>
+                    <Modal.Body  style={modalSectionStyle}>
                     <table className="TabTrigger">
-                            <tbody>
-
-                               
+                            <tbody>                               
                                 <tr><td className = "cellTabTriggerLabel" >Name</td></tr>
                                 <tr><td className = "cellTabTriggerInfos" >{trigger.label}</td></tr>
 
@@ -152,7 +162,7 @@ function TriggerCard({trigger, reload}){
                                 <tr><td className="cellTabTriggerInfos" >{trigger.interval}</td></tr>
 
                                 <tr><td className="cellTabTriggerLabel" >state</td></tr>
-                                <tr><td className = "cellTabTriggerInfos" > {Running?"Running":"Paused"}</td></tr>
+                                <tr><td className = "cellTabTriggerInfos" > {Running?"Running":"Paused"} </td></tr>
                                 
                                 <tr><td className = "cellTabTriggerLabel" >Last tick Cost</td></tr>
                                 <tr><td className="cellTabTriggerInfos" >{trigger.lastTick}</td></tr>  
@@ -160,32 +170,30 @@ function TriggerCard({trigger, reload}){
                     </table> 
                     </Modal.Body>
 
-                    <Modal.Footer  style={modalStyle}>
+                    <Modal.Footer style={modalSectionStyle}>
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>                      
                     </Modal.Footer>   
                 </Modal> 
-
                 
-                 <Modal show={ShowHistory} style={{opacity:1, margin:"auto"}} animation={false} onHide={handleCloseHistory} centered>    
+                
+                 <Modal show={ShowHistory} style={modalStyle} animation={true} onHide={handleCloseHistory} centered>    
 
-                    <Modal.Header closeButton  style={modalStyleResults}>
+                    <Modal.Header closeButton style={modalSectionStyle}>
                             <Modal.Title>DETAILS</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body  style={modalStyleResults}>
-                    <table className="TabTrigger">        
-                            
-                            <tbody>
-                              
+                    <Modal.Body  style={modalSectionStyle}>
+                    <table className="TabTrigger">                                    
+                            <tbody>                              
                                 {CallHistory.map((c)=>{
                                     return (
                                             <tr style={result}>
-                                                <td>time :  {c.time}</td>                                            
-                                                <td>txHash : {c.txHash}</td>
-                                                <td>fees :  {c.fees}</td>
-                                                <td>gasUsed : {c.gasUsed}</td>
-                                                <td>status : {c.status}</td>
+                                                <td><TimestampToString timestamp = {c.time}/></td>                                            
+                                                <td>| txHash  {c.txHash}</td>
+                                                <td>| fees :  {c.fees} ETH</td>
+                                                <td>| gas used : {c.gasUsed} GWEI</td>
+                                                <td>| status : {c.status?"success":"reverted"}</td>                                                
                                             </tr>                                        
                                          )
                                 })}
@@ -193,14 +201,15 @@ function TriggerCard({trigger, reload}){
                     </table> 
                     </Modal.Body>
 
-                    <Modal.Footer  style={modalStyleResults}>
+                    <Modal.Footer style={modalSectionStyle} >
                         <Button variant="secondary" onClick={handleCloseHistory}>
                             Close
                         </Button>                      
                     </Modal.Footer>   
-                </Modal>   
+                </Modal> 
+           </div>
                           
-         </div> 
+        
     )
 }
 

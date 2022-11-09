@@ -254,8 +254,7 @@ function AddButton({userAddress, chainId}){
                                         <option value="uint">uint</option>
                                         <option value="string">string</option>
                                         <option value="bool">boolean</option>
-                                    </Form.Select>
-                                
+                                    </Form.Select>                                
                                 </div>
                                 <div >
                                 <input value={ParamValue1} type="text" name="to" onChange={e=>setParamValue1(e.target.value)} style ={parameterValue}/><br/>
@@ -272,13 +271,11 @@ function AddButton({userAddress, chainId}){
                                         <option value="uint">uint</option>
                                         <option value="string">string</option>
                                         <option value="bool">boolean</option>
-                                    </Form.Select>
-                                
+                                    </Form.Select>                                
                                 </div>
                                 <div >
                                 <input value={ParamValue2} type="text" name="to" onChange={e=>setParamValue2(e.target.value)} style ={parameterValue}/><br/>
-                                </div>
-                                
+                                </div>                                
                             </div> 
                         </div>
                         <div id= "param3">Parameter 3
@@ -289,19 +286,16 @@ function AddButton({userAddress, chainId}){
                                         <option value="uint">uint</option>
                                         <option value="string">string</option>
                                         <option value="bool">boolean</option>
-                                    </Form.Select>
-                                
+                                    </Form.Select>                                
                                 </div>
                                 <div >
                                 <input value={ParamValue3} type="text" name="to" onChange={e=>setParamValue3(e.target.value)} style ={parameterValue}/><br/>
-                                </div>
-                                
+                                </div>                                
                             </div>
                         </div><br/>
                         <label>Interval</label><br/> 
                         
-                        <div id="start">
-                            
+                        <div id="start">                            
                             <div>        
                             <div id ="interval" style={interval}>
                                 <div > Days : <input style={selectInterval} type="text" value={Days} name="d" id="days" onChange={e=>setDays(e.target.value)}/> </div> +

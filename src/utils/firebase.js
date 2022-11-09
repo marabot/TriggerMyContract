@@ -177,6 +177,13 @@ export async function getResultCallByTrigger(triggerId){
         const docRef =  doc(db, "callResults", c.callId);
         const docSnap = await getDoc(docRef);
         if(docSnap.exists()){
+            const datas = docSnap.data();
+            console.log("callFirebase");
+            console.log(1018);
+            console.log(datas.fees / Math.pow(10,18));
+            c.fees = datas.fees  / Math.pow(10,18);
+            c.gasUsed = datas.gasUsed;
+            c.status = datas.status;
             results.push(c)            
         }       
     });
