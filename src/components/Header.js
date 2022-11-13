@@ -307,7 +307,7 @@ function Header({
   const boutonMenu= {
    
     color:"white",
-    backgroundColor:"#55225520",  
+    backgroundColor:"#333340",  
     borderColor:"#ffffff",
     fontSize:15,
     width:"150px",
@@ -320,7 +320,8 @@ function Header({
 
  const container={
   display:"flex",
-  backgroundColor:"#1f282b",  
+  backgroundColor:"#161610",  
+  //backgroundColor:"#1f282b",  
   width:"100%",
   height:"250px",
   justifyContent:"space-around",

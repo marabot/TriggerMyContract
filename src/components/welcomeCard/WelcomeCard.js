@@ -8,10 +8,9 @@ function WelcomeCard(triggers){
         display:"flex",        
         flexDirection:"column",
         color:"white",
-        padding:"12px",
+        padding:"52px",
         width:"100%",
         height:"100%",
-        backgroundColor:"#51111120", 
         borderColor:"#f33fff",
         borderRadius:"10px"
     }
@@ -28,15 +27,14 @@ function WelcomeCard(triggers){
             <div
             style = {triggersContainer}>
                
-                <p>1 - Connect and send some Funds to the TMCaddress automatically created</p>
-                <p>2 - Create your automated Trigger</p>
+                <p>1  - Connect and create your automated Triggersend some Funds to the TMCaddress automatically created</p>
+                <p>2 - send some Funds to the TMCaddress automatically created</p>
                 
-                <p>3 - Turn on  you Task, and be carefree</p>
+                <p>3  -  Turn on  you Task, and be carefree</p>
                 
-             </div>
+            </div>
                 
-        <p style={plzConnect}> Connect to create your first automated Trigger</p>
-
+     
                 
            
         </div>                    

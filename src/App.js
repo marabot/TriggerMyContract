@@ -28,7 +28,8 @@ function App() {
     //backgroundColor:"#51111120", 
     borderColor:"#f33fff",
     borderRadius:"20px",
-    backgroundColor:"#1f282b"
+   // backgroundColor:"#1f282b"
+   backgroundColor:"#161610"
  }
 
   const reload = async()=>{
@@ -44,14 +45,13 @@ function App() {
       let all = await getAllTriggers(); 
       console.log(all);  
       setTriggers(all);        
-      document.body.style.backgroundColor = "#1f282b";
+      document.body.style.backgroundColor = "#161610";
 
     } 
     
     init();
   },[ChainId]);
-  
-  
+    
   
   const displayAllTriggers=()=>{
     if (UserTriggers.length===0){

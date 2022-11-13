@@ -36,9 +36,10 @@ function TriggerCard({trigger, reload}){
         setRunnning(value);
     }
 
-    const deleteThisTrigger = (id)=>
+    const DeleteAction = (id)=>
     {   
-        deleteTrigger(id);   
+        deleteTrigger(id); 
+        setShowWarning(false);  
         reload();
     }
       
@@ -64,6 +65,12 @@ function TriggerCard({trigger, reload}){
       
     }
     
+    const modalStyleDetails={
+        width:"1900px",    
+      
+    }
+
+
     const modalSectionStyle={
         backgroundColor: "rgb(236, 236, 236)", 
         width:"1000px",
@@ -72,6 +79,13 @@ function TriggerCard({trigger, reload}){
         marginRight: 'auto'
     }
 
+    const modalSectionDetailsStyle={
+        backgroundColor: "rgb(236, 236, 236)",
+        width:"600px",
+        marginTop: '0px !important',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    }
 
     const main = {
         width:"1200px",
@@ -138,12 +152,12 @@ function TriggerCard({trigger, reload}){
                 </tbody>
             </table>    
       
-            <Modal show={Show}  style={modalStyle} animation={true} onHide={handleClose} centered>    
+            <Modal show={Show}  style={modalStyleDetails} animation={true} onHide={handleClose} centered>    
 
-                    <Modal.Header closeButton  style={modalSectionStyle} >
+                    <Modal.Header closeButton  style={modalSectionDetailsStyle} >
                             <Modal.Title>DETAILS</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body  style={modalSectionStyle}>
+                    <Modal.Body  style={modalSectionDetailsStyle}>
                     <table className="TabTrigger">
                             <tbody>                               
                                 <tr><td className = "cellTabTriggerLabel" >Name</td></tr>
@@ -170,7 +184,7 @@ function TriggerCard({trigger, reload}){
                     </table> 
                     </Modal.Body>
 
-                    <Modal.Footer style={modalSectionStyle}>
+                    <Modal.Footer style={modalSectionDetailsStyle}>
                         <Button variant="secondary" onClick={handleClose}>
                             Close
                         </Button>                      
@@ -202,9 +216,27 @@ function TriggerCard({trigger, reload}){
                     </Modal.Body>
 
                     <Modal.Footer style={modalSectionStyle} >
-                        <Button variant="secondary" onClick={handleCloseHistory}>
+                        <Button variant="secondary" onClick={handleCloseWarning}>
                             Close
                         </Button>                      
+                    </Modal.Footer>   
+                </Modal> 
+
+                <Modal show={ShowWarning} style={modalStyle} animation={true} onHide={handleCloseWarning} centered>    
+                    <Modal.Header closeButton style={modalSectionStyle}>
+                            <Modal.Title>Confirm Delete "{trigger.label}"</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body  style={modalSectionStyle}>
+                     <div></div>
+                    </Modal.Body>
+
+                    <Modal.Footer style={modalSectionStyle} >
+                        <Button variant="secondary" onClick={handleCloseWarning}>
+                            Cancel
+                        </Button>         
+                        <Button variant="secondary" onClick={()=>DeleteAction(trigger.id)}>
+                            Delete
+                        </Button>                   
                     </Modal.Footer>   
                 </Modal> 
            </div>
