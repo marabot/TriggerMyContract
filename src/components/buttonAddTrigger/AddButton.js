@@ -165,8 +165,7 @@ function AddButton({userAddress, chainId}){
         setParamType1('none');
     },[]);
 
-    useEffect(()=>{        
-         
+    useEffect(()=>{                 
        
         if (userAddress===undefined || (chainId!==1 && chainId!==5)) {
             document.querySelector("#buttonAdd").disabled = 1;

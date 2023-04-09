@@ -27,13 +27,10 @@ function Header({
   
     const [UserAddr, SetUserAddr]= useState([]);
     const [Web3Lib, setWeb3Lib]= useState([]);
-   
+    const [smallScreen, setSmallScreen] = useState(window.matchMedia("(min-width: 800px)").matches);
     
     function init() {
-
-     //   console.log("Initializing example");
-     //   console.log("WalletConnectProvider is", WalletConnectProvider);
-      
+          
         // Tell Web3modal what providers we have available.
         // Built-in web browser provider (only one can exist as a time)
         // like MetaMask, Brave or Opera is added automatically by Web3modal
@@ -41,13 +38,13 @@ function Header({
          
         };
         
-         onConnect();
- 
+        
 
-          web3Modal = new Web3Modal({
+        web3Modal = new Web3Modal({
           cacheProvider: false, // optional
           providerOptions, // required
         });      
+        onConnect(); 
       }
       
       async function fetchAccountData() {
@@ -89,8 +86,7 @@ function Header({
       // Get connected chain id from Ethereum node
       const chainId = await web3.eth.getChainId();
 
-     // console.log("chainId");
-      //console.log(chainId);
+     
       setChainId(chainId);
 
       // Load chain information over an HTTP API
@@ -197,7 +193,7 @@ function Header({
     
         console.log("Killing the wallet connection", provider);
       
-        // TODO: Which providers have close method?
+        
         if (provider!=undefined && provider!=null){        
           if(provider.close) {
             await provider.close();
@@ -281,7 +277,6 @@ function Header({
   }
 
   const displayNone={
-    width:"400px",
     display :"none"
   }
 
@@ -300,14 +295,13 @@ function Header({
       display:"flex",   
       alignItems:"center",
       color:"white",    
-      fontSize:"30px",
-      paddingLeft:"10px"
+      fontSize:smallScreen?"30px":"10px",
   }
 
   const boutonMenu= {
    
     color:"white",
-    backgroundColor:"#333340",  
+    backgroundColor:"#063970",  
     borderColor:"#ffffff",
     fontSize:15,
     width:"150px",
@@ -320,13 +314,11 @@ function Header({
 
  const container={
   display:"flex",
-  backgroundColor:"#161610",  
-  //backgroundColor:"#1f282b",  
-  width:"100%",
-  height:"250px",
-  justifyContent:"space-around",
+  backgroundColor:"#1f282b",  
+  width: smallScreen?"60%":"90%",
+  justifyContent:"space-between",
   alignItems:"center",
-  padding:"20px"  
+  marginTop:"20px"  
 }
 
  const wrongNetworkMess={
@@ -337,13 +329,13 @@ function Header({
  }
 
  const logoStyle= {
-    height:"200px"
+    height:"80px"
  }
 
  const connectContainer= {
   display:"flex",
   color:"white", 
-  width:"300px",
+  width:"200px",
   flexDirection:"column"
   
 }
@@ -380,9 +372,11 @@ const connectLine3= {
   */
 
    useEffect(()=>{
-   
+      window
+      .matchMedia("(min-width: 800px)")
+      .addEventListener('change', e => setSmallScreen( e.matches ));
 
-    },[UserAddr]);
+    },[]);
 
 // TODO display founds
 

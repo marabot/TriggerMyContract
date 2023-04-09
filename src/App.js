@@ -16,20 +16,17 @@ function App() {
   const [account, setAccount] = useState([]);
   const [ChainId, setChainId] = useState('');
   const [Triggers, setTriggers]=useState([]);
-  const [UserTriggers, setUserTriggers] =useState([]);
-   
+  const [UserTriggers, setUserTriggers] =useState([]);   
 
  
   const butAddDiv={
     display:"flex",
     justifyContent:"space-around",
     padding:"30px",
-    width:"50%",
-    //backgroundColor:"#51111120", 
+    width:"100%",
     borderColor:"#f33fff",
     borderRadius:"20px",
-   // backgroundColor:"#1f282b"
-   backgroundColor:"#161610"
+    backgroundColor:"#1f282b"
  }
 
   const reload = async()=>{
@@ -45,7 +42,7 @@ function App() {
       let all = await getAllTriggers(); 
       console.log(all);  
       setTriggers(all);        
-      document.body.style.backgroundColor = "#161610";
+      document.body.style.backgroundColor = "#1f282b";
 
     } 
     
@@ -73,37 +70,32 @@ function App() {
 
   useEffect(() => { 
     
-   setUserTriggers(Triggers.filter(e => e.maker === account[0]).filter(e=>e.deleted === false));
-   console.log("apppp");
-   console.log(ChainId);
+   setUserTriggers(Triggers.filter(e => e.maker === account[0]).filter(e=>e.deleted === false));  
 
   }, [Triggers,account, ChainId]);
 
 
   return (
-    
     <div className="App">
-      <HEADER      
-        setWeb3={setWeb3}
-        setAccounts={setAccount}
-        setChainId={setChainId}
-        ChainId={ChainId}
-        
-        />
+       <HEADER      
+          setWeb3={setWeb3}
+          setAccounts={setAccount}
+          setChainId={setChainId}
+          ChainId={ChainId}          
+          />     
+       
           
-        <div style={butAddDiv}>
-        
+        <div style={butAddDiv}>        
             <AddButton 
               userAddress={account[0]}  
               chainId={ChainId}    
             ></AddButton>         
-        </div>
-     
+        </div>     
 
         {displayAllTriggers(UserTriggers)}
         
       </div>
-
+    
   );
 }
 

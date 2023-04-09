@@ -33,7 +33,10 @@ function DepositButton({userWallet, deposit, chainId}){
   
     const style= {
         margin:"5px",
-        disabled:"1"
+        disabled:"1",
+        backgroundColor:"#0f3260",
+        borderColor:"#05447a"
+        
     }
 
 
@@ -48,7 +51,7 @@ function DepositButton({userWallet, deposit, chainId}){
        
       
            // alert(UserAddr);
-            if (userWallet.length===0 || (chainId!==1 && chainId!==5)) {
+            if (userWallet.length===0 || chainId!==5) {
                 
                 document.querySelector("#buttonDeposit").disabled = 1;
             }else
@@ -80,10 +83,10 @@ function DepositButton({userWallet, deposit, chainId}){
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary"  onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={depositAction}>
+                        <Button variant="primary"  style={style} onClick={depositAction}>
                             Deposit
                         </Button>
                     </Modal.Footer>   

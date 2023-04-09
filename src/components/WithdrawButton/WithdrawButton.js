@@ -30,7 +30,9 @@ function WithdrawButton({userWallet, withdraw, chainId}){
     };
 
     const style= {
-        margin:"5px"
+        margin:"5px",
+        backgroundColor:"#0f3260",
+        borderColor:"#05447a"
     }
 
     useEffect(()=>{
@@ -66,10 +68,10 @@ function WithdrawButton({userWallet, withdraw, chainId}){
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary"   onClick={handleClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={action}>
+                        <Button variant="primary"  style={style} onClick={action}>
                             Withdraw
                         </Button>
                     </Modal.Footer>   

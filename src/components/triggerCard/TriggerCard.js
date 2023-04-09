@@ -23,10 +23,10 @@ function TriggerCard({trigger, reload}){
     const OnOffButton = function (triggerId){
              
         if (Running===true){
-            return <button onClick={()=>switchInWork(triggerId, false)}> Stop </button>
+            return <button onClick={()=>switchInWork(triggerId, false)} style={switchOnOff}> Stop </button>
         }else
         {
-            return <button onClick={()=>switchInWork(triggerId, true)}> Start</button>
+            return <button onClick={()=>switchInWork(triggerId, true)} style={switchOnOff}> Start</button>
         }   
     }    
     
@@ -46,9 +46,10 @@ function TriggerCard({trigger, reload}){
        
     const detailsLink = {       
         color:"blue",
-        fontSize: "15px", 
+        fontSize: "11px", 
         height:"29px",
         textAlign:"center",
+        paddingTop:"3px",
     }
 
     const detailsCell={
@@ -57,23 +58,27 @@ function TriggerCard({trigger, reload}){
     }
 
     const buttonDelete={
-        fontSize:"13px",
+        fontSize:"11px",
+    }
+
+    const switchOnOff={
+        fontSize:"14px",
     }
 
     const modalStyle={
-        width:"1600px",    
+        width:"800px",    
       
     }
     
     const modalStyleDetails={
-        width:"1900px",    
+        width:"600px",    
       
     }
 
 
     const modalSectionStyle={
         backgroundColor: "rgb(236, 236, 236)", 
-        width:"1000px",
+        width:"600px",
         marginTop: '0px !important',
         marginLeft: 'auto',
         marginRight: 'auto'
@@ -88,14 +93,15 @@ function TriggerCard({trigger, reload}){
     }
 
     const main = {
-        width:"1200px",
-        marginTop: '0px !important',
+        width:"300px",
+        marginTop: '20px',
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        margin:'10px'
     }
 
     const result = {
-        fontSize:"13px",
+        fontSize:"12px",
         borderTop:"1px solid black"
     }
     const stateColor=(running)=>{
@@ -113,12 +119,10 @@ function TriggerCard({trigger, reload}){
 
     useEffect(()=>{
         const init = async()=>{
-        const callsHistory = await getResultCallByTrigger(trigger.id);
+            const callsHistory = await getResultCallByTrigger(trigger.id);
         
-       
-        setCallHistory(callsHistory);
-        setRunnning(trigger.inWork);   
-       
+            setCallHistory(callsHistory);
+            setRunnning(trigger.inWork);   
         } 
 
         init();
@@ -127,30 +131,22 @@ function TriggerCard({trigger, reload}){
 
     return(    
         
-        <div style={main}>            
-            <table className="TabTrigger">
-                <tbody>
-                     <tr>
-                        <td width="25%" className = "cellTabTriggerLabel">Name</td>
-                        <td width="45%" className="cellTabTriggerLabel">contract called</td>
-                        <td width="10%"></td>
-                        <td width ="10%" className="cellTabTriggerLabel">state</td>
-                        <td width="10%" rowSpan="2">                            
+        <div style={main}>  
+           
+            <table className="TabTriggerGrid">
+                <tbody>                     
+                        <tr><td width ="25%" className = "cellTabTriggerLabelGrid"> Name </td></tr>
+                        <tr><td width ="25%" className = "cellTabTriggerInfosGrid">{trigger.label}</td></tr>
+                        <tr><td width ="25%" className = "cellTabTriggerLabelGrid"> Contract </td></tr>
+                        <tr><td width ="20%" className = "cellTabTriggerInfosGrid">{trigger.contractToCall.substring(0,5) + "..." + trigger.contractToCall.substring(trigger.contractToCall.length-3,trigger.contractToCall.length)} </td></tr>                      
+                        <tr><td width ="15%" className = "cellTabTriggerInfosState">{stateColor(Running)} <p></p> {OnOffButton(trigger.id)}</td></tr>
+                        <tr><td width="25%" className = "cellTabTriggerInfosState" rowSpan="2">                            
                             <div style={detailsLink} onClick={detailsClick}>Details...</div>
                             <div style={detailsLink} onClick={HistoryClick}>History...</div>    
                             <div style={detailsLink}><button style={buttonDelete} onClick={()=>deleteClick()}> Delete </button></div>                           
-                        </td>
-                     </tr>
-                     <tr>
-                        <td className = "cellTabTriggerInfos">{trigger.label}</td>   
-                        <td className="cellTabTriggerInfos">{trigger.contractToCall}</td>   
-                        <td className="cellTabTriggerCentered">{OnOffButton(trigger.id)}</td>     
-                        <td className = "cellTabTrigger"> {stateColor(Running)}</td>
-                        <td colSpan="5"></td>    
-                     </tr>
-                    
+                        </td></tr>          
                 </tbody>
-            </table>    
+            </table>     
       
             <Modal show={Show}  style={modalStyleDetails} animation={true} onHide={handleClose} centered>    
 
@@ -216,7 +212,7 @@ function TriggerCard({trigger, reload}){
                     </Modal.Body>
 
                     <Modal.Footer style={modalSectionStyle} >
-                        <Button variant="secondary" onClick={handleCloseWarning}>
+                        <Button variant="secondary" onClick={handleCloseHistory}>
                             Close
                         </Button>                      
                     </Modal.Footer>   

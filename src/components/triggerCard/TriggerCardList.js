@@ -1,8 +1,19 @@
 import TriggerCard from './TriggerCard.js';
+import React, {useEffect, useState} from "react";
+
 
 function TriggerCardList({triggers, reload}){
     // console.log("Card List");
     // console.log(triggers);
+
+    const [BigScreen, setBigScreen] = useState(window.matchMedia("(min-width: 600px)").matches);
+
+    useEffect(()=>{
+        window
+        .matchMedia("(min-width: 600px)")
+        .addEventListener('change', e => setBigScreen( e.matches ));
+  
+      },[]);
 
     const isReady = ()=>{
         return (
@@ -20,12 +31,19 @@ function TriggerCardList({triggers, reload}){
 
     const triggersContainer={
         padding:"12px",
-        width:"100%",
-        height:"100%",
-        backgroundColor:"#51111120", 
+        width:BigScreen?"50vw":"100vw",
+        height:"auto",
+        backgroundColor:"#1f282b", 
         borderColor:"#f33fff",
-        borderRadius:"10px"
+        borderRadius:"10px",
+        display:"grid",
+        gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))",
+        gridGap:"0px",               
+        justifyContent:"center",
+        alignItems:"center",
+        padding:"2vw",
     }
+
 
     return(    
         <div style = {triggersContainer}>

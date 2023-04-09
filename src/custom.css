@@ -1,45 +1,71 @@
-.TabTrigger {
+
+
+  .TabTriggerGrid {
+    display: flex;    
+    justify-content: flex-start;
     background-color: rgb(236, 236, 236);
     color :rgb(33, 34, 126);
     width : 100%;
     margin : 5px; 
     border-radius: 10px;
     font-size: 20px;
+    padding:15px;
   }
 
-  .TabTriggerLabel {
+
+
+  .TabTriggerLabelGrid {
     background-color:#00000000;
     color :#000000;
     width : 100%;
-    margin : 5px;   
+    margin : 5px;
+   
     font-size: 10px;
     border-style: solid;
     border-width: 2px;
-    border-radius: 12px;
+    border-radius: 10px;
     border-collapse: separate; 
   }  
   
-  .cellTabTriggerInfos {    
-    padding-bottom: 15px;
-    text-align: center;
+
+
+  .cellTabTriggerInfosGrid {   
+    text-align: flex-start;
     color:rgb(42, 27, 126);
-    font-size: 20px;
-    
+    font-size: 18px;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    padding-top: 0px;   
+  }
+
+  .cellTabTriggerInfosState { 
+    display: flex;
+    width:300px;
+    flex-Direction: row;     
+    justify-content: space-around;
+    font-size: 18px;
+    padding-right:20px;
+    padding-top:20px;
     
   }
+                    
+
   
   .cellTabTriggerLabel{  
-    font-size: 15px;  
+    font-size: 13px;  
     color:black;
-    font-size: 15px;
-    padding:8px;
     text-align: center;
+    margin-top:10px;
   }
 
-
+  .cellTabTriggerLabelGrid{  
+    font-size: 11px;  
+    color:black; 
+    text-align: left;
+  }
   
   .cellTabTriggerCentered{
-    padding : 15px;  
+    padding : 12px;  
     text-align: center;
     color:rgb(42, 27, 126);
 

@@ -27,16 +27,11 @@ function WelcomeCard(triggers){
             <div
             style = {triggersContainer}>
                
-                <p>1  - Connect and create your automated Triggersend some Funds to the TMCaddress automatically created</p>
-                <p>2 - send some Funds to the TMCaddress automatically created</p>
+                <p> 1  - Connect and create the automated Trigger for your contract </p>
+                <p> 2  - Send some Funds to the TMCaddress automatically created </p>                
+                <p> 3  - Turn on you Task, and be carefree </p>
                 
-                <p>3  -  Turn on  you Task, and be carefree</p>
-                
-            </div>
-                
-     
-                
-           
+            </div>           
         </div>                    
     );
 }
